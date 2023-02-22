@@ -14,7 +14,7 @@ namespace pvp.Data.Repositories
 
 
 
-    public class SolutionRepository
+    public class SolutionRepository : ISolutionRepository
     {
         private readonly SystemDbContext _context;
         public SolutionRepository(SystemDbContext context)

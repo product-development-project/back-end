@@ -14,7 +14,7 @@ namespace pvp.Data.Repositories
 
 
 
-    public class TaskRepository
+    public class TaskRepository : ITaskRepository
     {
         private readonly SystemDbContext _context;
         public TaskRepository(SystemDbContext context)

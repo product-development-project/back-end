@@ -5,12 +5,16 @@ namespace pvp.Data.Repositories
 {
     public interface ISelectedTaskRepository
     {
-
+        Task<ParinktosUzduotys?> GetAsync(int id);
+        Task<IReadOnlyList<ParinktosUzduotys>> GetManyAsync();
+        Task CreateAsync(ParinktosUzduotys parinktosUzduotys);
+        Task UpdateAsync(ParinktosUzduotys parinktosUzduotys);
+        Task DeleteAsync(ParinktosUzduotys parinktosUzduotys);
     }
 
 
 
-    public class SelectedTaskRepository
+    public class SelectedTaskRepository :ISelectedTaskRepository
     {
         private readonly SystemDbContext _context;
         public SelectedTaskRepository(SystemDbContext context) 

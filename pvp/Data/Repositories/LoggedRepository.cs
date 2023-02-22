@@ -14,7 +14,7 @@ namespace pvp.Data.Repositories
 
 
 
-        public class LoggedRepository
+        public class LoggedRepository : ILoggedRepository
         {
             private readonly SystemDbContext _context;
             public LoggedRepository(SystemDbContext context)

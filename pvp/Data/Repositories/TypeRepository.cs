@@ -14,7 +14,7 @@ namespace pvp.Data.Repositories
 
 
 
-    public class TypeRepository
+    public class TypeRepository : ITypeRepository
     {
         private readonly SystemDbContext _context;
         public TypeRepository(SystemDbContext context)

@@ -5,16 +5,16 @@ namespace pvp.Data.Repositories
 {
         public interface IAdRepository
         {
-            Task<Prisijunge?> GetAsync(int id);
-            Task<IReadOnlyList<Prisijunge>> GetManyAsync();
-            Task CreateAsync(Prisijunge Prisijunge);
-            Task UpdateAsync(Prisijunge Prisijunge);
-            Task DeleteAsync(Prisijunge Prisijunge);
+            Task<Skelbimas?> GetAsync(int id);
+            Task<IReadOnlyList<Skelbimas>> GetManyAsync();
+            Task CreateAsync(Skelbimas Skelbimas);
+            Task UpdateAsync(Skelbimas Skelbimas);
+            Task DeleteAsync(Skelbimas Skelbimas);
         }
 
 
 
-        public class AdRepository
+        public class AdRepository :IAdRepository
         {
             private readonly SystemDbContext _context;
             public AdRepository(SystemDbContext context)
@@ -22,27 +22,27 @@ namespace pvp.Data.Repositories
                 _context = context;
             }
 
-            public async Task<Prisijunge?> GetAsync(int id)
+            public async Task<Skelbimas?> GetAsync(int id)
             {
-                return await _context.prisijunges.FirstOrDefaultAsync(x => x.Id == id);
+                return await _context.skelbimas.FirstOrDefaultAsync(x => x.id == id);
             }
-            public async Task<IReadOnlyList<Prisijunge>> GetManyAsync()
+            public async Task<IReadOnlyList<Skelbimas>> GetManyAsync()
             {
-                return await _context.prisijunges.ToListAsync();
+                return await _context.skelbimas.ToListAsync();
             }
-            public async Task CreateAsync(Prisijunge Prisijunge)
+            public async Task CreateAsync(Skelbimas Skelbimas)
             {
-                _context.prisijunges.Add(Prisijunge);
+                _context.skelbimas.Add(Skelbimas);
                 await _context.SaveChangesAsync();
             }
-            public async Task UpdateAsync(Prisijunge Prisijunge)
+            public async Task UpdateAsync(Skelbimas Skelbimas)
             {
-                _context.prisijunges.Update(Prisijunge);
+                _context.skelbimas.Update(Skelbimas);
                 await _context.SaveChangesAsync();
             }
-            public async Task DeleteAsync(Prisijunge Prisijunge)
+            public async Task DeleteAsync(Skelbimas Skelbimas)
             {
-                _context.prisijunges.Remove(Prisijunge);
+                _context.skelbimas.Remove(Skelbimas);
                 await _context.SaveChangesAsync();
             }
         }

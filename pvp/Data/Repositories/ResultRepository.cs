@@ -14,7 +14,7 @@ namespace pvp.Data.Repositories
 
 
 
-        public class ResultRepository
+        public class ResultRepository :IResultRepository
         {
             private readonly SystemDbContext _context;
             public ResultRepository(SystemDbContext context)
