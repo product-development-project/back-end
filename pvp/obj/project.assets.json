@@ -1133,6 +1133,24 @@
           }
         }
       },
+      "MySql.EntityFrameworkCore/6.0.10": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.10",
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.10",
+          "MySql.Data": "8.0.32"
+        },
+        "compile": {
+          "lib/net6.0/MySql.EntityFrameworkCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/MySql.EntityFrameworkCore.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Portable.BouncyCastle/1.9.0": {
         "type": "package",
         "compile": {
@@ -3118,6 +3136,19 @@
         "mysql.data.entityframework.nuspec"
       ]
     },
+    "MySql.EntityFrameworkCore/6.0.10": {
+      "sha512": "mm7iZ+RkaVGpOTNLSvfRmWZkOOr1LjejvXJgkrDBjJNtnI78HwTOkXavLD1xZ9cSLqqQvKr9QCP1McTOA/n4ng==",
+      "type": "package",
+      "path": "mysql.entityframeworkcore/6.0.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/MySql.EntityFrameworkCore.dll",
+        "lib/net6.0/MySql.EntityFrameworkCore.xml",
+        "mysql.entityframeworkcore.6.0.10.nupkg.sha512",
+        "mysql.entityframeworkcore.nuspec"
+      ]
+    },
     "Portable.BouncyCastle/1.9.0": {
       "sha512": "eZZBCABzVOek+id9Xy04HhmgykF0wZg9wpByzrWN7q8qEI0Qen9b7tfd7w8VA3dOeesumMG7C5ZPy0jk7PSRHw==",
       "type": "package",
@@ -4570,6 +4601,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.14",
       "MySql.Data >= 8.0.32",
       "MySql.Data.EntityFramework >= 8.0.32",
+      "MySql.EntityFrameworkCore >= 6.0.10",
       "Swashbuckle.AspNetCore >= 6.2.3"
     ]
   },
@@ -4655,6 +4687,10 @@
           "MySql.Data.EntityFramework": {
             "target": "Package",
             "version": "[8.0.32, )"
+          },
+          "MySql.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[6.0.10, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

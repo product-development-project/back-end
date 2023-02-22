@@ -5,7 +5,7 @@ namespace pvp.Data.Entities
     public class Sprendimas
     {
         public int id { get; set; }
-        public Blob Programa { get; set; }
+        public Byte[] Programa { get; set; }
         public int Teisingumas { get; set; }
         public int ProgramosLaikasTaskai { get; set; }
         public int ResursaiTaskai { get; set; }
