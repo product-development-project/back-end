@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Ru2LfqL89E2wY8K9A22qcgVPshc43Hy9uZ+m5d0ljbfXmVGk0v9TN3skK5nkXN+8LvpyzyXyFvbc9TXqhhXPOg==",
+  "dgSpecHash": "ww1z/i0tBhfcFgxsxGJ2Nl9HLETIcSviSzBAo9K1Ees/RzGKQtWXtTQ7BY/CpB3vZLU7KKvYbl+h0fKkUMaTKw==",
   "success": true,
   "projectFilePath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj",
   "expectedPackageFiles": [
@@ -68,6 +68,7 @@
     "C:\\Users\\valak\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\valak\\.nuget\\packages\\mysql.data\\8.0.32\\mysql.data.8.0.32.nupkg.sha512",
     "C:\\Users\\valak\\.nuget\\packages\\mysql.data.entityframework\\8.0.32\\mysql.data.entityframework.8.0.32.nupkg.sha512",
+    "C:\\Users\\valak\\.nuget\\packages\\mysql.entityframeworkcore\\6.0.10\\mysql.entityframeworkcore.6.0.10.nupkg.sha512",
     "C:\\Users\\valak\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",
     "C:\\Users\\valak\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
