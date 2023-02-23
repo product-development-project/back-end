@@ -24,7 +24,7 @@ namespace pvp.Data.Repositories
 
         public async Task<Tipas?> GetAsync(int id)
         {
-            return await _context.tipas.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.tipas.FirstOrDefaultAsync(x => x.id == id);
         }
         public async Task<IReadOnlyList<Tipas>> GetManyAsync()
         {
@@ -47,4 +47,4 @@ namespace pvp.Data.Repositories
         }
     }
 }
-}
+

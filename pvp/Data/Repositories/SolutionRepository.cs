@@ -24,7 +24,7 @@ namespace pvp.Data.Repositories
 
         public async Task<Sprendimas?> GetAsync(int id)
         {
-            return await _context.sprendimas.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.sprendimas.FirstOrDefaultAsync(x => x.id == id);
         }
         public async Task<IReadOnlyList<Sprendimas>> GetManyAsync()
         {
@@ -47,4 +47,4 @@ namespace pvp.Data.Repositories
         }
     }
 }
-}
+
