@@ -24,7 +24,7 @@ namespace pvp.Data.Repositories
 
         public async Task<Uzduotys?> GetAsync(int id)
         {
-            return await _context.uzduotys.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.uzduotys.FirstOrDefaultAsync(x => x.id == id);
         }
         public async Task<IReadOnlyList<Uzduotys>> GetManyAsync()
         {
@@ -47,4 +47,4 @@ namespace pvp.Data.Repositories
         }
     }
 }
-}
+
