@@ -28,8 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Data\Dto\" />
-    <Folder Include="Data\Repositories\" />
   </ItemGroup>
 
 </Project>
