@@ -28,7 +28,7 @@ namespace pvp.Controllers
                 Data = createTaskDto.Date,
                 Tipas_id = createTaskDto.Type_id,
                 UserId = "1111"
-            }
+            };
             await _taskRepository.CreateAsync(task);
             return Created("", new TaskDto(task.id, task.Pavadinimas, task.Aprasymas, task.Difficulty, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
         }
