@@ -22,7 +22,7 @@ namespace pvp.Controllers
             {
                 Pavadinimas = createTaskDto.Name,
                 Aprasymas = createTaskDto.Description,
-                Difficulty = createTaskDto.Sudetingumas,
+                Sudetingumas = createTaskDto.Difficulty,
                 Patvirtinta = createTaskDto.Confirmed,
                 Mokomoji = createTaskDto.Educational,
                 Data = createTaskDto.Date,
@@ -30,7 +30,7 @@ namespace pvp.Controllers
                 UserId = "1111"
             };
             await _taskRepository.CreateAsync(task);
-            return Created("", new TaskDto(task.id, task.Pavadinimas, task.Aprasymas, task.Difficulty, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
+            return Created("", new TaskDto(task.id, task.Pavadinimas, task.Aprasymas, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
         }
     }
 }
