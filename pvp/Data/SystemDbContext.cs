@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using pvp.Data.Auth;
 using pvp.Data.Entities;
 
 namespace pvp.Data
 {
-    public class SystemDbContext : DbContext
+    public class SystemDbContext : IdentityDbContext<RestUsers>
     {
         public DbSet<ParinktosUzduotys> parinktosUzduotys { get; set; }
         public DbSet<Prisijunge> prisijunges { get; set; }
