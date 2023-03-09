@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using pvp.Data.Dto;
 using pvp.Data.Entities;
 using pvp.Data.Repositories;
+using System.Data;
+using pvp.Auth;
+using pvp.Auth.Models;
+using System.Security.Claims;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace pvp.Controllers
 {
@@ -10,12 +16,15 @@ namespace pvp.Controllers
     public class AdController :ControllerBase
     {
         private readonly IAdRepository _adRepository;
-        public AdController(IAdRepository adRepository) 
+        private readonly IAuthorizationService _authorizationService;
+        public AdController(IAdRepository adRepository, IAuthorizationService authorizationService) 
         {
             _adRepository = adRepository;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
+        //[Authorize(Roles = UserRoles.Alll)]
         public async Task<IEnumerable<AdDto>> GetMany()
         {
             var ads = await _adRepository.GetManyAsync();
@@ -24,6 +33,7 @@ namespace pvp.Controllers
 
         [HttpGet]
         [Route("{adId}")]
+        //[Authorize(Roles = UserRoles.Alll)]
         public async Task<ActionResult<AdDto>> Get(int adId)
         {
             var ad = await _adRepository.GetAsync(adId);
@@ -33,6 +43,7 @@ namespace pvp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Company)]
         public async Task<ActionResult<AdDto>> Create(CreateAdDto createAdDto)
         {
             var ad = new Skelbimas
@@ -41,7 +52,7 @@ namespace pvp.Controllers
                 Aprasymas = createAdDto.Description,
                 Pradzia = createAdDto.Start,
                 Pabaiga = createAdDto.End,
-                UserId = "1111"
+                UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
             await _adRepository.CreateAsync(ad);
             return Created("", new AdDto(ad.id, ad.Pavadinimas, ad.Aprasymas, ad.Pradzia, ad.Pabaiga));
@@ -49,10 +60,17 @@ namespace pvp.Controllers
 
         [HttpPut]
         [Route("{adId}")]
+        [Authorize(Roles = UserRoles.Company)]
         public async Task<ActionResult<AdDto>> Update(int adId,UpdateAdDto updateAdDto)
         {
             var ad = await _adRepository.GetAsync(adId); 
             if (ad == null) { return NotFound();}
+
+            var authr = await _authorizationService.AuthorizeAsync(User, ad, PolicyNames.ResourceOwner);
+            if (!authr.Succeeded)
+            {
+                return Forbid();
+            }
 
             ad.Pavadinimas = updateAdDto.Name;
             ad.Aprasymas = updateAdDto.Description;
@@ -65,6 +83,7 @@ namespace pvp.Controllers
 
         [HttpDelete]
         [Route("{adId}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult> Remove(int adId)
         {
             var ad = await _adRepository.GetAsync(adId);

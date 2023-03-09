@@ -2,6 +2,12 @@
 using pvp.Data.Dto;
 using pvp.Data.Entities;
 using pvp.Data.Repositories;
+using pvp.Auth;
+using pvp.Auth.Models;
+using System.Security.Claims;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace pvp.Controllers
 {
@@ -10,12 +16,15 @@ namespace pvp.Controllers
     public class LoggedController : ControllerBase
     {
         private readonly ILoggedRepository _LoggedRepository;
-        public LoggedController(ILoggedRepository LoggedRepository)
+        private readonly IAuthorizationService _AuthorizationService;
+        public LoggedController(ILoggedRepository LoggedRepository, IAuthorizationService authorizationService)
         {
             _LoggedRepository = LoggedRepository;
+            _AuthorizationService= authorizationService;
         }
 
         [HttpGet]
+        [Authorize(Roles = UserRoles.Alll)]
         public async Task<IEnumerable<LoggedDto>> GetMany()
         {
             var Loggeds = await _LoggedRepository.GetManyAsync();
@@ -24,6 +33,7 @@ namespace pvp.Controllers
 
         [HttpGet]
         [Route("{LoggedId}")]
+        [Authorize(Roles = UserRoles.Alll)]
         public async Task<ActionResult<LoggedDto>> Get(int LoggedId)
         {
             var Logged = await _LoggedRepository.GetAsync(LoggedId);
@@ -33,13 +43,14 @@ namespace pvp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.User)]
         public async Task<ActionResult<LoggedDto>> Create(CreateLoggedDto createLoggedDto)
         {
             var Logged = new Prisijunge
             {
                 Skelbimas_id = createLoggedDto.Ad_id,
                 Uzduotys_id = createLoggedDto.Task_id,
-                UserId = "1111"
+                UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
             await _LoggedRepository.CreateAsync(Logged);
             return Created("", new LoggedDto(Logged.Id, Logged.Skelbimas_id, Logged.Uzduotys_id));
@@ -63,6 +74,7 @@ namespace pvp.Controllers
 
         [HttpDelete]
         [Route("{LoggedId}")]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<ActionResult> Remove(int LoggedId)
         {
             var Logged = await _LoggedRepository.GetAsync(LoggedId);
