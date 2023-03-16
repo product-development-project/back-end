@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj": {}
+    "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj": {
+    "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
+        "projectUniqueName": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj",
         "projectName": "pvp",
-        "projectPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
-        "packagesPath": "C:\\Users\\Marijus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\obj\\",
+        "projectPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj",
+        "packagesPath": "C:\\Users\\valak\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Marijus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\valak\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -111,7 +111,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }
