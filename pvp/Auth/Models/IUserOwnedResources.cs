@@ -1,6 +1,6 @@
 ﻿namespace pvp.Auth.Models
 {
-    public class IUserOwnedResources
+    public interface IUserOwnedResources
     {
         public string UserId { get;}
     }
