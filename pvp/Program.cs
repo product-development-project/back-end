@@ -15,6 +15,18 @@ using pvp.Auth.Models;
 var builder = WebApplication.CreateBuilder(args);
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000") // add the allowed origins
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                      });
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddIdentity<RestUsers, IdentityRole>().AddEntityFrameworkStores<SystemDbContext>().AddDefaultTokenProviders();
@@ -70,8 +82,9 @@ app.UseRouting();
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("AllowAll");
 var dbSedder = app.Services.CreateScope().ServiceProvider.GetRequiredService<AuthDbSeeder>();
 await dbSedder.SeedAsync();
-
 
 app.Run();
