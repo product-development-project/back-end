@@ -190,3 +190,13 @@ C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\obj\Debug\net6.0
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\obj\Debug\net6.0\pvp.csproj.CopyComplete
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\obj\Debug\net6.0\pvp.genruntimeconfig.cache
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\obj\Debug\net6.0\ref\pvp.dll
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.csproj.AssemblyReference.cache
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.AssemblyInfoInputs.cache
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.AssemblyInfo.cs
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.csproj.CoreCompileInputs.cache
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.MvcApplicationPartsAssemblyInfo.cs
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.MvcApplicationPartsAssemblyInfo.cache
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.dll
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\refint\pvp.dll
+D:\Mokslai\6 semestras\Produkto vystymo projektas\back-end\pvp\obj\Debug\net6.0\pvp.pdb
