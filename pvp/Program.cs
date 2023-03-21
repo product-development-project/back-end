@@ -57,7 +57,7 @@ builder.Services.AddTransient<ISelectedTaskRepository, SelectedTaskRepository>()
 builder.Services.AddTransient<ISolutionRepository, SolutionRepository>();
 builder.Services.AddTransient<ITaskRepository, TaskRepository>();
 builder.Services.AddTransient<ITypeRepository, TypeRepository>();
-
+builder.Services.AddTransient<IUserInfoRepositry, UserInfoRepository>();
 
 
 
