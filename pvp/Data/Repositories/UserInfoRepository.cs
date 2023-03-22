@@ -9,7 +9,7 @@ namespace pvp.Data.Repositories
         Task<IdentityUser?> GetAsync(string username);
         //Task<IReadOnlyList<IdentityUser>> GetManyAsync();
         //Task UpdateAsync(IdentityUser user);
-        //Task DeleteAsync(IdentityUser user);
+        Task DeleteAsync(IdentityUser user);
     }
     public class UserInfoRepository : IUserInfoRepositry
     {
@@ -26,10 +26,11 @@ namespace pvp.Data.Repositories
         //{
 
         //}
-        //public async Task DeleteAsync(IdentityUser user)
-        //{
-
-        //}
+        public async Task DeleteAsync(IdentityUser user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

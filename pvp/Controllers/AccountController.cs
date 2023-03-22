@@ -34,5 +34,24 @@ namespace pvp.Controllers
 
             return new UserInfoDto(user.Id, user.UserName, user.Email);
         }
+
+        //[HttpPut]
+        //[Route("{UserName}")]
+        //[Authorize(Roles = UserRoles.Alll)]
+        //public async Task<ActionResult<UserInfoDto>> Update()
+        //{
+
+        //}
+
+        [HttpDelete]
+        [Route("{UserName}")]
+        [Authorize(Roles = UserRoles.Alll)]
+        public async Task<ActionResult<UserInfoDto>> Delete(string userName)
+        {
+            var userInfo = await _userInfoRepositry.GetAsync(userName);
+            if (userInfo == null) { return NotFound(); }
+            await _userInfoRepositry.DeleteAsync(userInfo);
+            return NoContent();
+        }
     }
 }
