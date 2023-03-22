@@ -35,13 +35,26 @@ namespace pvp.Controllers
             return new UserInfoDto(user.Id, user.UserName, user.Email);
         }
 
-        //[HttpPut]
-        //[Route("{UserName}")]
-        //[Authorize(Roles = UserRoles.Alll)]
-        //public async Task<ActionResult<UserInfoDto>> Update()
-        //{
+        [HttpPut]
+        [Route("{UserName}")]
+        [Authorize(Roles = UserRoles.Alll)]
+        public async Task<ActionResult<UserInfoDto>> Update(string UserName, UpdateUserInfoDto updateUserInfoDto)
+        {
+            var user = await _userInfoRepositry.GetAsync(UserName);
+            if (user == null) { return NotFound(); }
 
-        //}
+            var authr = await _authorizationService.AuthorizeAsync(User, user, PolicyNames.ResourceOwner);
+            if (!authr.Succeeded || User.Identity.Name != UserName)
+            {
+                return Forbid();
+            }
+
+            user.UserName = updateUserInfoDto.Name;
+            user.Email = updateUserInfoDto.Email;
+
+            await _userInfoRepositry.UpdateAsync(user);
+            return Ok(new UserInfoDto(user.Id, user.UserName, user.Email));
+        }
 
         [HttpDelete]
         [Route("{UserName}")]
