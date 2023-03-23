@@ -66,5 +66,6 @@ namespace pvp.Controllers
             await _userInfoRepositry.DeleteAsync(userInfo);
             return NoContent();
         }
+
     }
 }
