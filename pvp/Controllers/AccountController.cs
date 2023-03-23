@@ -4,7 +4,7 @@ using pvp.Auth.Models;
 using pvp.Data.Dto;
 using pvp.Data.Repositories;
 using System.Data;
-
+using System.IdentityModel.Tokens.Jwt;
 namespace pvp.Controllers
 {
     [ApiController]
@@ -26,11 +26,8 @@ namespace pvp.Controllers
         public async Task<ActionResult<UserInfoDto>> Get(string UserName)
         {
             var user = await _userInfoRepositry.GetAsync(UserName);
-            if (User.Identity.Name != UserName)
-            {
-                return Forbid();
-            }
-
+            
+            Console.WriteLine("yyy");
             if (user == null) { return NotFound(); }
 
             return new UserInfoDto(user.Id, user.UserName, user.Email);
@@ -44,11 +41,11 @@ namespace pvp.Controllers
             var user = await _userInfoRepositry.GetAsync(UserName);
             if (user == null) { return NotFound(); }
 
-            var authr = await _authorizationService.AuthorizeAsync(User, user, PolicyNames.ResourceOwner);
-            if (!authr.Succeeded || User.Identity.Name != UserName)
-            {
-                return Forbid();
-            }
+            //var authr = await _authorizationService.AuthorizeAsync(User, user, PolicyNames.ResourceOwner);
+            //if (!authr.Succeeded || User.Identity.Name != UserName)
+            //{
+            //    return Forbid();
+            //}
 
             user.UserName = updateUserInfoDto.Name;
             user.Email = updateUserInfoDto.Email;
