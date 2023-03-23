@@ -8,6 +8,7 @@ using System.Data;
 namespace pvp.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("api/User")]
     public class AccountController : ControllerBase
     {
