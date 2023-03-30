@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using pvp.Auth.Models;
 using pvp.Data.Dto;
+using pvp.Data.Entities;
 using pvp.Data.Repositories;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -26,10 +27,22 @@ namespace pvp.Controllers
         public async Task<ActionResult<UserInfoDto>> Get(string UserName)
         {
             var user = await _userInfoRepositry.GetAsync(UserName);
-            
-            Console.WriteLine("yyy");
-            if (user == null) { return NotFound(); }
 
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var authHeader = Request.Headers["Authorization"].ToString();
+            if (authHeader.StartsWith("Bearer "))
+            {
+                var token = authHeader.Substring("Bearer ".Length).Trim();
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+                string name = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+                if (name != UserName)
+                {
+                    return Forbid();
+                }
+
+            }
+            if (user == null) { return NotFound(); }
+            
             return new UserInfoDto(user.Id, user.UserName, user.Email);
         }
 
@@ -41,11 +54,20 @@ namespace pvp.Controllers
             var user = await _userInfoRepositry.GetAsync(UserName);
             if (user == null) { return NotFound(); }
 
-            //var authr = await _authorizationService.AuthorizeAsync(User, user, PolicyNames.ResourceOwner);
-            //if (!authr.Succeeded || User.Identity.Name != UserName)
-            //{
-            //    return Forbid();
-            //}
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var authHeader = Request.Headers["Authorization"].ToString();
+            if (authHeader.StartsWith("Bearer "))
+            {
+                var token = authHeader.Substring("Bearer ".Length).Trim();
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+                string name = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+                if (name != UserName)
+                {
+                    return Forbid();
+                }
+
+            }
+            if (user == null) { return NotFound(); }
 
             user.UserName = updateUserInfoDto.Name;
             user.Email = updateUserInfoDto.Email;
@@ -57,11 +79,24 @@ namespace pvp.Controllers
         [HttpDelete]
         [Route("{UserName}")]
         [Authorize(Roles = UserRoles.Alll)]
-        public async Task<ActionResult<UserInfoDto>> Delete(string userName)
+        public async Task<ActionResult<UserInfoDto>> Delete(string UserName)
         {
-            var userInfo = await _userInfoRepositry.GetAsync(userName);
-            if (userInfo == null) { return NotFound(); }
-            await _userInfoRepositry.DeleteAsync(userInfo);
+            var user = await _userInfoRepositry.GetAsync(UserName);
+            if (user == null) { return NotFound(); }
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var authHeader = Request.Headers["Authorization"].ToString();
+            if (authHeader.StartsWith("Bearer "))
+            {
+                var token = authHeader.Substring("Bearer ".Length).Trim();
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+                string name = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+                if (name != UserName)
+                {
+                    return Forbid();
+                }
+
+            }
+            await _userInfoRepositry.DeleteAsync(user);
             return NoContent();
         }
 
