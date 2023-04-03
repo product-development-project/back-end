@@ -4606,23 +4606,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\valak\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\edgar\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj",
+      "projectUniqueName": "D:\\Mokslai\\6 semestras\\Produkto vystymo projektas\\back-end\\pvp\\pvp.csproj",
       "projectName": "pvp",
-      "projectPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj",
-      "packagesPath": "C:\\Users\\valak\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\obj\\",
+      "projectPath": "D:\\Mokslai\\6 semestras\\Produkto vystymo projektas\\back-end\\pvp\\pvp.csproj",
+      "packagesPath": "C:\\Users\\edgar\\.nuget\\packages\\",
+      "outputPath": "D:\\Mokslai\\6 semestras\\Produkto vystymo projektas\\back-end\\pvp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\valak\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\edgar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4630,6 +4631,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4716,7 +4718,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }
