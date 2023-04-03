@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 namespace pvp.Controllers
 {
     [ApiController]
-    [Route("api/Result")]
+    [Route("api/Task/{taskId}/Result")]
     public class ResultController : ControllerBase
     {
         private readonly IResultRepository _resultRepository;
@@ -25,9 +25,9 @@ namespace pvp.Controllers
 
         [HttpGet]
         [Authorize(Roles = UserRoles.Alll)]
-        public async Task<IEnumerable<ResultDto>> GetMany()
+        public async Task<IEnumerable<ResultDto>> GetManyByTask(int taskId)
         {
-            var results = await _resultRepository.GetManyAsync();
+            var results = await _resultRepository.GetManyAsyncByTask(taskId);
             return results.Select(o => new ResultDto(o.Id, o.Duomenys, o.Rezultatas, o.Pavyzdine, o.Uzduotis_id));
         }
 
@@ -53,7 +53,7 @@ namespace pvp.Controllers
                 Rezultatas = createResultDto.Result,
                 Pavyzdine = createResultDto.Example,
                 Uzduotis_id = createResultDto.Task_id,
-                //UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub) not sure, ar reikia
+                UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
 
             await _resultRepository.CreateAsync(result);
@@ -63,25 +63,22 @@ namespace pvp.Controllers
 
         [HttpPut]
         [Route("{resultId")]
-        //galbūt gali reikt rolės
+        [Authorize(Roles = UserRoles.CompanyAndAdmin)]
         public async Task<ActionResult<AdDto>> Update(int resultId, UpdateResultDto updateResultDto)
         {
             var result = await _resultRepository.GetAsync(resultId);
             if (result == null) { return NotFound(); }
-
-            /*
+ 
             var authr = await _authorizationService.AuthorizeAsync(User, result, PolicyNames.ResourceOwner);
             if (!authr.Succeeded)
             {
                 return Forbid();
             }
-            */
-
+            
             result.Duomenys = updateResultDto.Data;
             result.Rezultatas = updateResultDto.Result;
             result.Pavyzdine = updateResultDto.Example;
-            //result.Uzduotis_id = updateResultDto.Task_id;
-
+           
             await _resultRepository.UpdateAsync(result);
             return Ok(new ResultDto(result.Id, result.Duomenys, result.Rezultatas, result.Pavyzdine, result.Uzduotis_id));
         }
@@ -96,6 +93,5 @@ namespace pvp.Controllers
             await _resultRepository.DeleteAsync(result);
             return NoContent();
         }
-
     }
 }
