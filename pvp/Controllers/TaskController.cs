@@ -40,5 +40,33 @@ namespace pvp.Controllers
             await _taskRepository.CreateAsync(task);
             return Created("", new TaskDto(task.id, task.Pavadinimas, task.Aprasymas, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
         }
+        [HttpGet]
+        //[Authorize(Roles = UserRoles.Alll)]
+        public async Task<IEnumerable<TaskDto>> GetMany()
+        {
+            var tasks = await _taskRepository.GetManyAsync();
+            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Aprasymas, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+        }
+
+        [HttpGet]
+        [Route("{taskId}")]
+        //[Authorize(Roles = UserRoles.Alll)]
+        public async Task<ActionResult<TaskDto>> Get(int taskId)
+        {
+            var task = await _taskRepository.GetAsync(taskId);
+            if (task == null) { return NotFound(); }
+
+            return new TaskDto(task.id, task.Pavadinimas, task.Aprasymas, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id);
+        }
+        [HttpDelete]
+        [Route("{taskId}")]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<ActionResult> Remove(int taskId)
+        {
+            var task = await _taskRepository.GetAsync(taskId);
+            if (task == null) { return NotFound();}
+            await _taskRepository.DeleteAsync(task);
+            return NoContent();
+        }
     }
 }
