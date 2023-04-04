@@ -6,6 +6,7 @@ namespace pvp.Data.Repositories
         public interface IResultRepository
         {
             Task<Rezultatai?> GetAsync(int id);
+            Task<IReadOnlyList<Rezultatai>> GetManyAsyncByTask(int taskId);
             Task<IReadOnlyList<Rezultatai>> GetManyAsync();
             Task CreateAsync(Rezultatai Rezultatai);
             Task UpdateAsync(Rezultatai Rezultatai);
@@ -26,6 +27,12 @@ namespace pvp.Data.Repositories
             {
                 return await _context.rezultatais.FirstOrDefaultAsync(x => x.Id == id);
             }
+
+            public async Task<IReadOnlyList<Rezultatai>> GetManyAsyncByTask(int taskId)
+            {
+                return await _context.rezultatais.Where(o => o.Uzduotis_id == taskId).ToListAsync();
+            }
+
             public async Task<IReadOnlyList<Rezultatai>> GetManyAsync()
             {
                 return await _context.rezultatais.ToListAsync();
@@ -35,6 +42,7 @@ namespace pvp.Data.Repositories
                 _context.rezultatais.Add(Rezultatai);
                 await _context.SaveChangesAsync();
             }
+
             public async Task UpdateAsync(Rezultatai Rezultatai)
             {
                 _context.rezultatais.Update(Rezultatai);
