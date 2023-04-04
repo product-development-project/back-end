@@ -109,7 +109,7 @@ namespace pvp.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Pavadinimas = table.Column<string>(type: "longtext", nullable: false),
-                    Aprasymas = table.Column<string>(type: "longtext", nullable: false)
+                    Problema = table.Column<byte[]>(type: "longblob", nullable: false)
                 },
                 constraints: table =>
                 {
