@@ -62,7 +62,7 @@ namespace pvp.Controllers
         
 
         [HttpPut]
-        [Route("{resultId")]
+        [Route("{resultId}")]
         [Authorize(Roles = UserRoles.CompanyAndAdmin)]
         public async Task<ActionResult<AdDto>> Update(int resultId, UpdateResultDto updateResultDto)
         {
