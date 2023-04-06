@@ -15,6 +15,8 @@ using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using pvp.Data.Entities;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace pvp.Controllers
 {
@@ -174,6 +176,67 @@ namespace pvp.Controllers
 
             return new TaskCountDto(count);
 
+        }
+        [HttpGet]
+        [Route("TaskAnalisisByUser/{taskId}")]
+        public async Task<ActionResult<TaskAnalysisDto>> GetTaskAnalysis(int taskId)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var authHeader = Request.Headers["Authorization"].ToString();
+            if (!authHeader.StartsWith("Bearer "))
+            {
+                return Forbid();
+            }
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+            var jwtToken = tokenHandler.ReadJwtToken(token);
+            string name = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+            var user = await _userInfoRepositry.GetAsync(name);
+            if (user == null) { return NotFound(); }
+            var solutions = await _solutionRepository.GetManyAsync();
+            var loggedUsers = await _loggedRepository.GetManyAsync();
+            var task = await _taskRepository.GetAsync(taskId);
+            if (task == null){return NotFound();}
+
+            loggedUsers = loggedUsers.Where(x => x.Uzduotys_id == task.id).ToList();
+            var loggedUser = loggedUsers.FirstOrDefault(x => x.UserId == user.Id);
+            if (loggedUser == null)
+            {
+                return NotFound();
+            }
+            var usersSolution = solutions.FirstOrDefault(x => x.Prisijunge_id == loggedUser.Id);
+            if (usersSolution == null)
+            {
+                return NotFound();
+            }
+
+            solutions = solutions.Join(loggedUsers, s => s.Prisijunge_id, p => p.Id, (s, p) => new { Solution = s, LoggedUser = p })
+                .Select(x => x.Solution).ToList();
+
+            var Teisingumas = 0;
+            var laikastaskai = 0;
+            var resursaitaskai = 0;
+            var kiekis = solutions.Count();
+            foreach (var item in solutions)
+            {
+                Teisingumas += item.Teisingumas;
+                laikastaskai += item.Teisingumas;
+                resursaitaskai += item.ResursaiTaskai;
+            }
+            var total = Teisingumas + laikastaskai + resursaitaskai;
+
+            Teisingumas = Teisingumas / kiekis;
+            laikastaskai = laikastaskai / kiekis;
+            resursaitaskai = resursaitaskai / kiekis;
+            total = total / kiekis;
+            var procentasteisingumas = 0;
+            var procentaslaikas = 0;
+            var procentasresursai = 0;
+            var procentaitotal = 0;
+            procentaitotal = (int)(((total - (usersSolution.Teisingumas + usersSolution.ProgramosLaikasTaskai + usersSolution.ResursaiTaskai)) * 100) / ((usersSolution.Teisingumas + usersSolution.ProgramosLaikasTaskai + usersSolution.ResursaiTaskai)));
+            procentasteisingumas = (int)(((Teisingumas - usersSolution.Teisingumas) * 100) / usersSolution.Teisingumas);
+            procentaslaikas = (int)(((laikastaskai - usersSolution.ProgramosLaikasTaskai) * 100) / usersSolution.ProgramosLaikasTaskai);
+            procentasresursai = (int)(((resursaitaskai - usersSolution.ResursaiTaskai) * 100) / usersSolution.ResursaiTaskai);
+            return new TaskAnalysisDto(procentasteisingumas, procentaslaikas, procentasresursai, procentaitotal);
         }
     }
 }
