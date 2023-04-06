@@ -13,6 +13,8 @@ using pvp.Data.Repositories;
 using pvp.Data.Dto;
 using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using pvp.Data.Entities;
 
 namespace pvp.Controllers
 {
@@ -150,6 +152,28 @@ namespace pvp.Controllers
 
 
             return ratings.Select(o => new RatingsDto(o.UserName, o.TeisingumasTaskai, o.ProgramosLaikasTaskai, o.ResursaiTaskai, o.TotalPoints));
+        }
+        [HttpGet]
+        [Route("TaskCount/{UserName}")]
+        public async Task<ActionResult<TaskCountDto>> GetCount(string UserName)
+        {
+            var user = await _userInfoRepositry.GetAsync(UserName);
+            if (user == null) { return NotFound(); }
+            var solutions = await _solutionRepository.GetManyAsync();
+            var loggedUsers = await _loggedRepository.GetManyAsync();
+            var task = await _taskRepository.GetManyAsync();
+            loggedUsers = loggedUsers.Where(lu => lu.UserId == user.Id).ToList();
+
+            solutions = solutions.Join(loggedUsers, s => s.Prisijunge_id, p => p.Id, (s, p) => new { Solution = s, LoggedUser = p })
+                .Select(x => x.Solution).Where(x => x.Teisingumas >= 80).ToList();
+            loggedUsers = solutions.Join(loggedUsers, s => s.Prisijunge_id, p => p.Id, (s, p) => new { Solution = s, LoggedUser = p })
+                .Select(x => x.LoggedUser).ToList();
+            var count = task.Join(loggedUsers, s=> s.id, p => p.Uzduotys_id, (s, p) => new { task = s, LoggedUser = p})
+                .Select(x => x.task).Where(x => x.Mokomoji == true).Count();
+            
+
+            return new TaskCountDto(count);
+
         }
     }
 }
