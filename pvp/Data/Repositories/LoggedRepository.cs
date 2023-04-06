@@ -45,5 +45,6 @@ namespace pvp.Data.Repositories
                 _context.prisijunges.Remove(Prisijunge);
                 await _context.SaveChangesAsync();
             }
-        }
+
+    }
 }

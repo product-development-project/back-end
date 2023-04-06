@@ -9,8 +9,8 @@ namespace pvp.Data.Entities
         [Required]
         public string UserId { get; set; }
         public User user { get; set; }
-        public int Skelbimas_id { get; set; }
-        public int Uzduotys_id { get; set; }
+        public int? Skelbimas_id { get; set; }
+        public int? Uzduotys_id { get; set; }
 
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Tsp;
 using pvp.Data.Entities;
+
 
 namespace pvp.Data.Repositories
 {
@@ -10,6 +12,7 @@ namespace pvp.Data.Repositories
         //Task<IReadOnlyList<IdentityUser>> GetManyAsync();
         Task UpdateAsync(IdentityUser user);
         Task DeleteAsync(IdentityUser user);
+        Task<IReadOnlyList<IdentityUser>> GetManyAsync();
     }
     public class UserInfoRepository : IUserInfoRepositry
     {
@@ -31,6 +34,11 @@ namespace pvp.Data.Repositories
         {
             _context.Users.Remove((Auth.RestUsers)user);
             await _context.SaveChangesAsync();
+        }
+        public async Task<IReadOnlyList<IdentityUser>> GetManyAsync()
+        {
+            var users = await _context.Users.ToListAsync();
+            return users.Where(u => u != null).ToList();
         }
 
     }

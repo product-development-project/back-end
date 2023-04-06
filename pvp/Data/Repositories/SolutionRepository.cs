@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Tsp;
 using pvp.Data.Entities;
 
 namespace pvp.Data.Repositories
@@ -28,7 +29,8 @@ namespace pvp.Data.Repositories
         }
         public async Task<IReadOnlyList<Sprendimas>> GetManyAsync()
         {
-            return await _context.sprendimas.ToListAsync();
+            var sol = await _context.sprendimas.ToListAsync();
+            return sol;
         }
         public async Task CreateAsync(Sprendimas Sprendimas)
         {
@@ -45,6 +47,7 @@ namespace pvp.Data.Repositories
             _context.sprendimas.Remove(Sprendimas);
             await _context.SaveChangesAsync();
         }
+
     }
 }
 
