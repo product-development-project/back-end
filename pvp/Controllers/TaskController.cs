@@ -29,7 +29,7 @@ namespace pvp.Controllers
             var task = new Uzduotys
             {
                 Pavadinimas = createTaskDto.Name,
-                Aprasymas = createTaskDto.Description,
+                Problema = createTaskDto.Problem,
                 Sudetingumas = createTaskDto.Difficulty,
                 Patvirtinta = createTaskDto.Confirmed,
                 Mokomoji = createTaskDto.Educational,
@@ -38,14 +38,14 @@ namespace pvp.Controllers
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
             await _taskRepository.CreateAsync(task);
-            return Created("", new TaskDto(task.id, task.Pavadinimas, task.Aprasymas, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
+            return Created("", new TaskDto(task.id, task.Pavadinimas, task.Problema, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
         }
         [HttpGet]
         //[Authorize(Roles = UserRoles.Alll)]
         public async Task<IEnumerable<TaskDto>> GetMany()
         {
             var tasks = await _taskRepository.GetManyAsync();
-            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Aprasymas, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
         [HttpGet]
@@ -56,7 +56,7 @@ namespace pvp.Controllers
             var task = await _taskRepository.GetAsync(taskId);
             if (task == null) { return NotFound(); }
 
-            return new TaskDto(task.id, task.Pavadinimas, task.Aprasymas, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id);
+            return new TaskDto(task.id, task.Pavadinimas, task.Problema, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id);
         }
         [HttpDelete]
         [Route("{taskId}")]

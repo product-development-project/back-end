@@ -361,9 +361,9 @@ namespace pvp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Problema")
+                    b.Property<string>("Aprasymas")
                         .IsRequired()
-                        .HasColumnType("longblob");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Pavadinimas")
                         .IsRequired()
@@ -435,9 +435,9 @@ namespace pvp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Aprasymas")
+                    b.Property<byte[]>("Problema")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longblob");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime(6)");
