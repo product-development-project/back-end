@@ -1,0 +1,19 @@
+{
+    "testCases": [
+        {
+            "exercise": "sevenBoom",
+            "input": "[1, 2, 3, 4, 5, 6, 7]",
+            "expectedOutput": "Boom!"
+        },
+        {
+            "exercise": "sevenBoom",
+            "input": "[8, 6, 33, 100]",
+            "expectedOutput": "there is no 7 in the array"
+        },
+        {
+            "exercise": "sevenBoom",
+            "input": "[2, 55, 60, 97, 86]",
+            "expectedOutput": "Boom!"
+        }
+    ]
+}

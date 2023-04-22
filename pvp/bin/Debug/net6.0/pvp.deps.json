@@ -18,6 +18,7 @@
           "MySql.Data": "8.0.32",
           "MySql.Data.EntityFramework": "8.0.32",
           "MySql.EntityFrameworkCore": "6.0.10",
+          "Newtonsoft.Json": "13.0.3",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
         "runtime": {
@@ -632,6 +633,14 @@
           "lib/net6.0/MySql.EntityFrameworkCore.dll": {
             "assemblyVersion": "6.0.10.0",
             "fileVersion": "6.0.10.0"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.3.27908"
           }
         }
       },
@@ -1419,6 +1428,13 @@
       "sha512": "sha512-mm7iZ+RkaVGpOTNLSvfRmWZkOOr1LjejvXJgkrDBjJNtnI78HwTOkXavLD1xZ9cSLqqQvKr9QCP1McTOA/n4ng==",
       "path": "mysql.entityframeworkcore/6.0.10",
       "hashPath": "mysql.entityframeworkcore.6.0.10.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "path": "newtonsoft.json/13.0.3",
+      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
     },
     "Portable.BouncyCastle/1.9.0": {
       "type": "package",

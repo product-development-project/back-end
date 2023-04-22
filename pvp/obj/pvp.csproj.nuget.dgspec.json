@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj": {}
+    "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\pvp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj": {
+    "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\pvp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj",
+        "projectUniqueName": "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\pvp.csproj",
         "projectName": "pvp",
-        "projectPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\pvp.csproj",
-        "packagesPath": "C:\\Users\\valak\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend\\pvp\\pvp\\obj\\",
+        "projectPath": "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\pvp.csproj",
+        "packagesPath": "C:\\Users\\Marijus\\.nuget\\packages\\",
+        "outputPath": "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\valak\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Marijus\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -87,6 +87,10 @@
               "target": "Package",
               "version": "[6.0.10, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
@@ -111,7 +115,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
