@@ -4656,11 +4656,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\pvp.csproj",
+      "projectUniqueName": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
       "projectName": "pvp",
-      "projectPath": "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\pvp.csproj",
+      "projectPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
       "packagesPath": "C:\\Users\\Marijus\\.nuget\\packages\\",
-      "outputPath": "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\obj\\",
+      "outputPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

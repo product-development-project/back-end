@@ -1,0 +1,239 @@
+{
+    "testCases": [
+        {
+            "exercise": "sevenBoom",
+            "input": "1 2 3 4 5 6 7",
+            "expectedOutput": "Boom!"
+        },
+        {
+            "exercise": "sevenBoom",
+            "input": "8 6 33 100",
+            "expectedOutput": "there is no 7 in the array"
+        },
+        {
+            "exercise": "sevenBoom",
+            "input": "2 55 60 97 86",
+            "expectedOutput": "Boom!"
+        },
+        {
+            "exercise": "Boomerang",
+            "input": "3 7 3 2 1 5 1 2 2 -2 2",
+            "expectedOutput": "3"
+        },
+        {
+            "exercise": "Boomerang",
+            "input": "1 7 1 7 1 7 1",
+            "expectedOutput": "5"
+        },
+        {
+            "exercise": "Boomerang",
+            "input": "9 9 9 9 9",
+            "expectedOutput": "0"
+        },
+        {
+            "exercise": "BrickDimensions",
+            "input": "1 1 1 1 1",
+            "expectedOutput": "true"
+        },
+        {
+            "exercise": "BrickDimensions",
+            "input": "1 1 1 0 0",
+            "expectedOutput": "false"
+        },
+        {
+            "exercise": "BrickDimensions",
+            "input": "1 1 1 2 2",
+            "expectedOutput": "true"
+        },
+        {
+            "exercise": "Building",
+            "input": "9",
+            "expectedOutput": "2"
+        },
+        {
+            "exercise": "Building",
+            "input": "100",
+            "expectedOutput": "null"
+        },
+        {
+            "exercise": "Building",
+            "input": "4183059834009",
+            "expectedOutput": "2022"
+        },
+        {
+            "exercise": "Holmes",
+            "input": "aaaaabc",
+            "expectedOutput": "NO"
+        },
+        {
+            "exercise": "Holmes",
+            "input": "abcc",
+            "expectedOutput": "YES"
+        },
+        {
+            "exercise": "Holmes",
+            "input": "aabbcd",
+            "expectedOutput": "NO"
+        },
+        {
+            "exercise": "MultiplyStrings",
+            "input": "123 456",
+            "expectedOutput": "56088"
+        },
+        {
+            "exercise": "MultiplyStrings",
+            "input": "99999999 0",
+            "expectedOutput": "YES"
+        },
+        {
+            "exercise": "MultiplyStrings",
+            "input": "2 3",
+            "expectedOutput": "6"
+        },
+        {
+            "exercise": "Names",
+            "input": "W. Shakespeare Jr.",
+            "expectedOutput": "false"
+        },
+        {
+            "exercise": "Names",
+            "input": "W. Shakespeare",
+            "expectedOutput": "true"
+        },
+        {
+            "exercise": "Names",
+            "input": "H. G. Wells Jr.",
+            "expectedOutput": "false"
+        },
+        {
+            "exercise": "Names",
+            "input": "H. G. W.",
+            "expectedOutput": "false"
+        },
+        {
+            "exercise": "Names",
+            "input": "H.G.",
+            "expectedOutput": "false"
+        },
+        {
+            "exercise": "Names",
+            "input": "J.R.R. Tolkien",
+            "expectedOutput": "true"
+        },
+        {
+            "exercise": "OddishOrEvenish",
+            "input": "12",
+            "expectedOutput": "Oddish"
+        },
+        {
+            "exercise": "OddishOrEvenish",
+            "input": "123456789",
+            "expectedOutput": "Oddish"
+        },
+        {
+            "exercise": "OddishOrEvenish",
+            "input": "2468",
+            "expectedOutput": "Evenish"
+        },
+        {
+            "exercise": "OddishOrEvenish",
+            "input": "42",
+            "expectedOutput": "Evenish"
+        },
+        {
+            "exercise": "Palindrome",
+            "input": "Repaper",
+            "expectedOutput": "YES"
+        },
+        {
+            "exercise": "Palindrome",
+            "input": "Rotavator",
+            "expectedOutput": "YES"
+        },
+        {
+            "exercise": "Palindrome",
+            "input": "University",
+            "expectedOutput": "NO"
+        },
+        {
+            "exercise": "Palindrome",
+            "input": "S",
+            "expectedOutput": "YES"
+        },
+        {
+            "exercise": "Regex",
+            "input": "abc ..*",
+            "expectedOutput": "true"
+        },
+        {
+            "exercise": "Regex",
+            "input": "a ab*",
+            "expectedOutput": "true"
+        },
+        {
+            "exercise": "Regex",
+            "input": "aaa ab*a",
+            "expectedOutput": "false"
+        },
+        {
+            "exercise": "SmallestWindow",
+            "input": "mississippi iss",
+            "expectedOutput": "issi"
+        },
+        {
+            "exercise": "SmallestWindow",
+            "input": "abcdefghij acd",
+            "expectedOutput": "acdefg"
+        },
+        {
+            "exercise": "SmallestWindow",
+            "input": "xyxy yy",
+            "expectedOutput": "-1"
+        },
+        {
+            "exercise": "TrapWater",
+            "input": "3 0 0 2 0 4",
+            "expectedOutput": "10"
+        },
+        {
+            "exercise": "TrapWater",
+            "input": "0 1 0 2 1 0 1 3 2 1 2 1",
+            "expectedOutput": "6"
+        },
+        {
+            "exercise": "TrapWater",
+            "input": "3 1 2 4 0 1",
+            "expectedOutput": "7"
+        },
+        {
+            "exercise": "Zoo",
+            "input": "ZZZoooo",
+            "expectedOutput": "Yes"
+        },
+        {
+            "exercise": "Zoo",
+            "input": "ZZZZooooo",
+            "expectedOutput": "No"
+        },
+        {
+            "exercise": "Zoo",
+            "input": "ZZZoooooo",
+            "expectedOutput": "Yes"
+        },
+        {
+            "exercise": "Jumps",
+            "input": "2 3 1 1 4",
+            "expectedOutput": "2"
+        },
+        {
+            "exercise": "Jumps",
+            "input": "1 1 1 0 1",
+            "expectedOutput": "-1"
+        },
+        {
+            "exercise": "Jumps",
+            "input": "1 2 3 4 5",
+            "expectedOutput": "3"
+        }
+    ]
+}
