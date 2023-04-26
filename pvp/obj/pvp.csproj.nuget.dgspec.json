@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Mano\\Desktop\\Pvp\\back-end\\pvp\\pvp.csproj": {}
+    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Mano\\Desktop\\Pvp\\back-end\\pvp\\pvp.csproj": {
+    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Mano\\Desktop\\Pvp\\back-end\\pvp\\pvp.csproj",
+        "projectUniqueName": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj",
         "projectName": "pvp",
-        "projectPath": "C:\\Users\\Mano\\Desktop\\Pvp\\back-end\\pvp\\pvp.csproj",
-        "packagesPath": "C:\\Users\\Mano\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Mano\\Desktop\\Pvp\\back-end\\pvp\\obj\\",
+        "projectPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj",
+        "packagesPath": "C:\\Users\\Marijus\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Mano\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Marijus\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -84,6 +87,10 @@
               "target": "Package",
               "version": "[6.0.10, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
@@ -95,7 +102,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -107,7 +115,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
