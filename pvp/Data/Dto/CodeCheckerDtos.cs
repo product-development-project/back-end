@@ -1,5 +1,5 @@
 ﻿namespace pvp.Data.Dto
 {
     public record CodeChekcerDto(string language, string type, string name, string code);
-    public record ResultDto(string[] passed, string[] failed);
+    public record CodeResultDto(string[] passed, string[] failed);
 }

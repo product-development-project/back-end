@@ -16,13 +16,8 @@ namespace pvp.Controllers
     {
         [HttpPost]
         //[Authorize(Roles = UserRoles.Alll)]
-        public async Task<IActionResult> RunCode(CodeChekcerDto requestBody)
+        public async Task<ActionResult<CodeResultDto>> RunCode(CodeChekcerDto requestBody)
         {
-            if (requestBody == null)
-            {
-                return BadRequest();
-            }
-
             string endpoint = "https://api.jdoodle.com/v1/execute";
             //reikės paskui kažkur saugiai padėti šitus pvz Azure key vault
             string clientId = "5c30f90c511a11b6effd3efe10e13103";
@@ -34,8 +29,6 @@ namespace pvp.Controllers
             string versionIndex;
             string[] languagesToMatch = { "c", "cpp" };
             var testCases = new List<Tuple<string, string>>();
-
-            JObject responseData = new JObject();
 
             if (languagesToMatch.Contains(language))
             {
@@ -58,13 +51,11 @@ namespace pvp.Controllers
                  .ToList();
             }
 
-            JArray passedArray = new JArray();
-            JArray failedArray = new JArray();
+            List<string> passedList = new List<string> { };
+            List<string> failedList = new List<string> { };
 
             foreach (var testCase in testCases)
             {
-                try
-                {
                     var request = (HttpWebRequest)WebRequest.Create(endpoint);
                     request.Method = "POST";
                     request.ContentType = "application/json";
@@ -101,33 +92,23 @@ namespace pvp.Controllers
                                 {
                                     if (responseJson["output"].ToString().Trim() == testCase.Item2.Trim())
                                     {
-                                        passedArray.Add($"Test case {testCase.Item1} passed.");
+                                        passedList.Add($"Test case {testCase.Item1} passed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
                                     }
                                     else
                                     {
-                                        failedArray.Add($"Test case {testCase.Item1} failed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
+                                        failedList.Add($"Test case {testCase.Item1} failed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
                                     }
-                                }
-                                else
-                                {
-                                    return BadRequest(responseJson);
                                 }
                             }
                         }
                     }
-                }
-                catch (WebException ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    var errorResponse = ex.Response as HttpWebResponse;
-                    var errorMessage = errorResponse != null ? new StreamReader(errorResponse.GetResponseStream()).ReadToEnd() : ex.Message;
-                    return BadRequest($"An error occurred while executing the code: {errorMessage}");
-                }
             }
 
-            responseData["passed"] = passedArray;
-            responseData["failed"] = failedArray;
-            return Ok(responseData);
+            string[] passedArray = passedList.ToArray();
+            string[] failedArray = failedList.ToArray();
+
+
+            return new CodeResultDto(passedArray, failedArray);
         }
     }
 }
