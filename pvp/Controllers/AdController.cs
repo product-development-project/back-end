@@ -99,6 +99,7 @@ namespace pvp.Controllers
         [Authorize(Roles = UserRoles.Company)]
         public async Task<ActionResult<AdDto>> Create(CreateAdDto createAdDto)
         {
+            Console.WriteLine(createAdDto.Start);
             var ad = new Skelbimas
             {
                 Pavadinimas = createAdDto.Name,
