@@ -14,11 +14,25 @@ namespace pvp.Controllers
     [Route("api/Task")]
     public class TaskController :ControllerBase
     {
-        private readonly ITaskRepository _taskRepository; 
+        private readonly IAdRepository _adRepository;
+        private readonly ILoggedRepository _loggedRepository;
+        private readonly IResultRepository _resultRepository;
+        private readonly ISelectedTaskRepository _selectedTaskRepository;
+        private readonly ISolutionRepository _solutionRepository;
+        private readonly ITaskRepository _taskRepository;
+        private readonly ITypeRepository _typeRepository;
+        private readonly IUserInfoRepositry _userInfoRepositry;
         private readonly IAuthorizationService _authorizationService;
-        public TaskController(ITaskRepository taskRepository, IAuthorizationService authorizationService)
+        public TaskController(IAdRepository adRepository, ILoggedRepository loggedRepository, IResultRepository resultRepository, ISelectedTaskRepository selectedTaskRepository, ISolutionRepository solutionRepository, ITaskRepository taskRepository, ITypeRepository typeRepository, IUserInfoRepositry userInfoRepositry, IAuthorizationService authorizationService)
         {
+            _adRepository = adRepository;
+            _loggedRepository = loggedRepository;
+            _resultRepository = resultRepository;
+            _selectedTaskRepository = selectedTaskRepository;
+            _solutionRepository = solutionRepository;
             _taskRepository = taskRepository;
+            _typeRepository = typeRepository;
+            _userInfoRepositry = userInfoRepositry;
             _authorizationService = authorizationService;
         }
 
@@ -94,6 +108,47 @@ namespace pvp.Controllers
             if (task == null) { return NotFound();}
             await _taskRepository.DeleteAsync(task);
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("Competition/{competitionId}")]
+        public async Task<IEnumerable<TaskDto>> GetManyCompetition(int competitionId)
+        {
+            Console.WriteLine("asdasdasd");
+            var tasks = await _taskRepository.GetManyAsync();
+            var selected = await _selectedTaskRepository.GetManyAsync();
+            selected = selected.Where(o => o.Skelbimas_id == competitionId).ToList();
+
+            var result = tasks.Join(selected, task => task.id, p => p.Uzduotys_id, (task, id) => task).ToList();
+            
+            return result.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+        }
+
+        [HttpPost]
+        [Route("AddTaskCompetition/{taskId}/{competitionId}")]
+        public async Task<ActionResult<TaskDto>> AddTask(int taskId, int competitionId)
+        {
+            var competition = await _adRepository.GetAsync(competitionId);
+            var task = await _taskRepository.GetAsync(taskId);
+            if(competition == null) { return NotFound(); }
+            if (task == null)
+            {
+                return NotFound();
+            }
+            Console.WriteLine(Request.Headers["Authorization"].ToString());
+            var authr = await _authorizationService.AuthorizeAsync(User, competition, PolicyNames.ResourceOwner);
+            if (!authr.Succeeded)
+            {
+                return Forbid();
+            }
+
+            var added = new ParinktosUzduotys
+            {
+                Skelbimas_id = competitionId,
+                Uzduotys_id = taskId
+            };
+            await _selectedTaskRepository.CreateAsync(added);
+            return Ok();
         }
     }
 }

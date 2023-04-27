@@ -16,10 +16,24 @@ namespace pvp.Controllers
     public class AdController :ControllerBase
     {
         private readonly IAdRepository _adRepository;
+        private readonly ILoggedRepository _loggedRepository;
+        private readonly IResultRepository _resultRepository;
+        private readonly ISelectedTaskRepository _selectedTaskRepository;
+        private readonly ISolutionRepository _solutionRepository;
+        private readonly ITaskRepository _taskRepository;
+        private readonly ITypeRepository _typeRepository;
+        private readonly IUserInfoRepositry _userInfoRepositry;
         private readonly IAuthorizationService _authorizationService;
-        public AdController(IAdRepository adRepository, IAuthorizationService authorizationService) 
+        public AdController(IAdRepository adRepository, ILoggedRepository loggedRepository, IResultRepository resultRepository, ISelectedTaskRepository selectedTaskRepository, ISolutionRepository solutionRepository, ITaskRepository taskRepository, ITypeRepository typeRepository, IUserInfoRepositry userInfoRepositry, IAuthorizationService authorizationService) 
         {
             _adRepository = adRepository;
+            _loggedRepository = loggedRepository;
+            _resultRepository = resultRepository;
+            _selectedTaskRepository = selectedTaskRepository;
+            _solutionRepository = solutionRepository;
+            _taskRepository = taskRepository;
+            _typeRepository = typeRepository;
+            _userInfoRepositry = userInfoRepositry;
             _authorizationService = authorizationService;
         }
 
@@ -29,6 +43,45 @@ namespace pvp.Controllers
         {
             var ads = await _adRepository.GetManyAsync();
             return ads.Select(o => new AdDto(o.id, o.Pavadinimas, o.Aprasymas, o.Pradzia, o.Pabaiga));
+        }
+
+        [HttpGet]
+        [Route("CompanyAds")]
+        [Authorize(Roles = UserRoles.CompanyAndAdmin)]
+        public async Task<IEnumerable<AdDto>> GetManyCompany()
+        {
+            var ads = await _adRepository.GetManyAsync();
+            var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            ads = ads.Where(o => o.UserId == userId).ToList();
+            return ads.Select(o => new AdDto(o.id, o.Pavadinimas, o.Aprasymas, o.Pradzia, o.Pabaiga));
+        }
+
+        [HttpGet]
+        [Route("CompanyAds/{adId}/Logged")]
+        [Authorize(Roles = UserRoles.CompanyAndAdmin)]
+        public async Task<IEnumerable<RatingsDto>> GetUsers(int adId)
+        {
+            var loggedUsers = await _loggedRepository.GetManyAsync();
+            loggedUsers = loggedUsers.Where(o => o.Skelbimas_id == adId).ToList();
+            var users = await _userInfoRepositry.GetManyAsync();
+            var solutions = await _solutionRepository.GetManyAsync();   
+
+
+            var ratings = solutions.Join(loggedUsers, s => s.Prisijunge_id, p => p.Id, (s, p) => new { Solution = s, LoggedUser = p })
+                       .Join(users, sp => sp.LoggedUser.UserId, u => u.Id, (sp, u) => new { sp.Solution, User = u })
+                       .GroupBy(sp => sp.User.UserName)
+                       .Select(g => new
+                       {
+                           UserName = g.Key,
+                           TeisingumasTaskai = g.Sum(sp => sp.Solution.Teisingumas),
+                           ProgramosLaikasTaskai = g.Sum(sp => sp.Solution.ProgramosLaikasTaskai),
+                           ResursaiTaskai = g.Sum(sp => sp.Solution.ResursaiTaskai),
+                           TotalPoints = g.Sum(sp => sp.Solution.Teisingumas + sp.Solution.ProgramosLaikasTaskai + sp.Solution.ResursaiTaskai)
+                       })
+                       .OrderByDescending(r => r.TotalPoints)
+                       .ToList();
+
+            return ratings.Select(o => new RatingsDto(o.UserName, o.TeisingumasTaskai, o.ProgramosLaikasTaskai, o.ResursaiTaskai, o.TotalPoints));
         }
 
         [HttpGet]
@@ -46,6 +99,7 @@ namespace pvp.Controllers
         [Authorize(Roles = UserRoles.Company)]
         public async Task<ActionResult<AdDto>> Create(CreateAdDto createAdDto)
         {
+            Console.WriteLine(createAdDto.Start);
             var ad = new Skelbimas
             {
                 Pavadinimas = createAdDto.Name,
