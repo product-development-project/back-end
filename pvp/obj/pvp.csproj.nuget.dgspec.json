@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj": {}
+    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj": {
+    "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj",
+        "projectUniqueName": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
         "projectName": "pvp",
-        "projectPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\pvp.csproj",
+        "projectPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
         "packagesPath": "C:\\Users\\Marijus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\back-end\\pvp\\obj\\",
+        "outputPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
