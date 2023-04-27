@@ -23,13 +23,13 @@ namespace pvp.Controllers
             string clientId = "5c30f90c511a11b6effd3efe10e13103";
             string clientSecret = "d6a5fa726f7cb80f5744d6c3d45f077ad53e6192b6a97d690037a56905aceb91";
 
-            string code = requestBody.code.Replace("\'", "\"");
+            string code = requestBody.code;
             string language = requestBody.language;
             string type = requestBody.type;
             string versionIndex;
             string[] languagesToMatch = { "c", "cpp" };
             var testCases = new List<Tuple<string, string>>();
-
+            
             if (languagesToMatch.Contains(language))
             {
                 versionIndex = "5";
