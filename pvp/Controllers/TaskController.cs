@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using System.Security.Claims;
 using pvp.Auth.Models;
+using MySql.Data.MySqlClient;
+using System.Text;
 
 namespace pvp.Controllers 
 {
@@ -40,6 +42,8 @@ namespace pvp.Controllers
         [Authorize(Roles = UserRoles.CompanyAndAdmin)]
         public async Task<ActionResult<TaskDto>> Create(CreateTaskDto createTaskDto) 
         {
+            Console.WriteLine("asdasd: {0}", createTaskDto.Problem);
+
             var task = new Uzduotys
             {
                 Pavadinimas = createTaskDto.Name,
