@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using System.Security.Claims;
 using pvp.Auth.Models;
+using MySql.Data.MySqlClient;
+using System.Text;
 
 namespace pvp.Controllers 
 {
