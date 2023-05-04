@@ -42,8 +42,6 @@ namespace pvp.Controllers
         [Authorize(Roles = UserRoles.CompanyAndAdmin)]
         public async Task<ActionResult<TaskDto>> Create(CreateTaskDto createTaskDto) 
         {
-            Console.WriteLine("asdasd: {0}", createTaskDto.Problem);
-
             var task = new Uzduotys
             {
                 Pavadinimas = createTaskDto.Name,
