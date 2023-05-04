@@ -49,7 +49,7 @@ builder.Services.AddDbContext<SystemDbContext>();
 
 
 
-
+builder.Services.AddTransient<IHelpRepository, HelpRepository>();
 builder.Services.AddTransient<IAdRepository, AdRepository>();
 builder.Services.AddTransient<ILoggedRepository, LoggedRepository>();
 builder.Services.AddTransient<IResultRepository, ResultRepository>();
