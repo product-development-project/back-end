@@ -83,7 +83,7 @@
         {
             "exercise": "MultiplyStrings",
             "input": "99999999 0",
-            "expectedOutput": "YES"
+            "expectedOutput": "0"
         },
         {
             "exercise": "MultiplyStrings",
