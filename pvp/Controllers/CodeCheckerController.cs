@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using pvp.Data.Dto;
-using pvp.Data.Entities;
+using pvp.Data.Repositories;
 using System.Net;
 using System.Text;
 
@@ -14,6 +14,13 @@ namespace pvp.Controllers
     [Route("api/code/checker")]
     public class CodeCheckerController : ControllerBase
     {
+        private readonly IResultRepository _resultRepository;
+
+        public CodeCheckerController(IResultRepository resultRepository)
+        {
+            _resultRepository = resultRepository;
+        }
+
         [HttpPost]
         //[Authorize(Roles = UserRoles.Alll)]
         public async Task<ActionResult<CodeResultDto>> RunCode(CodeChekcerDto requestBody)
@@ -26,29 +33,16 @@ namespace pvp.Controllers
             string code = requestBody.code;
             string language = requestBody.language;
             string type = requestBody.type;
-            string versionIndex;
-            string[] languagesToMatch = { "c", "cpp" };
+            string versionIndex = "4";
+            int id = requestBody.taskId;
             var testCases = new List<Tuple<string, string>>();
-
-            if (languagesToMatch.Contains(language))
-            {
-                versionIndex = "5";
-            }
-            else
-            {
-                versionIndex = "4";
-            }
 
             if (type == "exercise")
             {
                 string exerciseName = requestBody.name;
 
-                JObject testCasesJson = JObject.Parse(System.IO.File.ReadAllText("./Controllers/test-cases.json"));
-                List<TestCase> cases = JsonConvert.DeserializeObject<List<TestCase>>(testCasesJson["testCases"].ToString());
-
-                testCases = cases.Where(c => c.exercise == exerciseName)
-                 .Select(c => Tuple.Create(c.input, c.expectedOutput))
-                 .ToList();
+                var results = await _resultRepository.GetManyAsyncByTask(id);
+                testCases = results.Select(o => Tuple.Create(o.Duomenys, o.Rezultatas)).ToList();
             }
 
             List<string> passedList = new List<string> { };

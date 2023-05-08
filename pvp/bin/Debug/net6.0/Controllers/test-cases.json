@@ -46,6 +46,21 @@
       "expectedOutput": "2"
     },
     {
+      "exercise": "Jumps",
+      "input": "2 3 1 1 4",
+      "expectedOutput": "2"
+    },
+    {
+      "exercise": "Jumps",
+      "input": "1 2 1 0 3",
+      "expectedOutput": "-1"
+    },
+    {
+      "exercise": "Jumps",
+      "input": "1 1 1 1 1",
+      "expectedOutput": "4"
+    },
+    {
       "exercise": "NumberInRange",
       "input": "5 15 2",
       "expectedOutput": "1"
@@ -241,6 +256,21 @@
       "expectedOutput": "[]"
     },
     {
+      "exercise": "LinkedListNode",
+      "input": "1 2 3 4 5,2",
+      "expectedOutput": "[2, 1, 4, 3, 5]"
+    },
+    {
+      "exercise": "LinkedListNode",
+      "input": "1 2 3 4 5 6,4",
+      "expectedOutput": "[4, 3, 2, 1, 5, 6]"
+    },
+    {
+      "exercise": "LinkedListNode",
+      "input": "1,1",
+      "expectedOutput": "[1]"
+    },
+    {
       "exercise": "NonNestedItems",
       "input": "[1, [2, [3, [4, 5]], 6]]",
       "expectedOutput": "6"
@@ -319,6 +349,51 @@
       "exercise": "TrapWater",
       "input": "3 1 2 4 0 1",
       "expectedOutput": "7"
+    },
+    {
+      "exercise": "SumCombinations",
+      "input": "1 2 3,4",
+      "expectedOutput": "4"
+    },
+    {
+      "exercise": "SumCombinations",
+      "input": "2 5 10,15",
+      "expectedOutput": "6"
+    },
+    {
+      "exercise": "SumCombinations",
+      "input": "2 3 6,10",
+      "expectedOutput": "7"
+    },
+    {
+      "exercise": "SubarraySum",
+      "input": "1 2 3 4 5,9",
+      "expectedOutput": "2 4"
+    },
+    {
+      "exercise": "SubarraySum",
+      "input": "10 5 2 7 1 9,15",
+      "expectedOutput": "1 4"
+    },
+    {
+      "exercise": "SubarraySum",
+      "input": "1 2 3 4 5,15",
+      "expectedOutput": "-1"
+    },
+    {
+      "exercise": "NthTermSequence",
+      "input": "1 2 3 4 5",
+      "expectedOutput": "[1, 4, 9, 16, 25]"
+    },
+    {
+      "exercise": "NthTermSequence",
+      "input": "3 7 11 15",
+      "expectedOutput": "[23, 31, 39, 47]"
+    },
+    {
+      "exercise": "NthTermSequence",
+      "input": "0 2 6 12",
+      "expectedOutput": "[20, 30, 42, 56]"
     },
     {
       "exercise": "Zoo",
