@@ -29,7 +29,7 @@ namespace pvp.Controllers
             string versionIndex;
             string[] languagesToMatch = { "c", "cpp" };
             var testCases = new List<Tuple<string, string>>();
-            
+
             if (languagesToMatch.Contains(language))
             {
                 versionIndex = "5";
@@ -53,62 +53,78 @@ namespace pvp.Controllers
 
             List<string> passedList = new List<string> { };
             List<string> failedList = new List<string> { };
+            double runTime = 0;
+            double memoryUsage = 0;
 
             foreach (var testCase in testCases)
             {
-                    var request = (HttpWebRequest)WebRequest.Create(endpoint);
-                    request.Method = "POST";
-                    request.ContentType = "application/json";
+                var request = (HttpWebRequest)WebRequest.Create(endpoint);
+                request.Method = "POST";
+                request.ContentType = "application/json";
 
-                    string postData = JsonConvert.SerializeObject(new
+                string postData = JsonConvert.SerializeObject(new
+                {
+                    clientId = clientId,
+                    clientSecret = clientSecret,
+                    script = code,
+                    language = language,
+                    versionIndex = versionIndex,
+                    stdin = testCase.Item1
+                });
+
+                byte[] data = Encoding.UTF8.GetBytes(postData);
+
+                request.ContentLength = data.Length;
+
+                using (Stream stream = request.GetRequestStream())
+                {
+                    stream.Write(data, 0, data.Length);
+                }
+
+                using (var response = await request.GetResponseAsync())
+                {
+                    using (var stream = response.GetResponseStream())
                     {
-                        clientId = clientId,
-                        clientSecret = clientSecret,
-                        script = code,
-                        language = language,
-                        versionIndex = versionIndex,
-                        stdin = testCase.Item1
-                    });
-
-                    byte[] data = Encoding.UTF8.GetBytes(postData);
-
-                    request.ContentLength = data.Length;
-
-                    using (Stream stream = request.GetRequestStream())
-                    {
-                        stream.Write(data, 0, data.Length);
-                    }
-
-                    using (var response = await request.GetResponseAsync())
-                    {
-                        using (var stream = response.GetResponseStream())
+                        using (var reader = new StreamReader(stream))
                         {
-                            using (var reader = new StreamReader(stream))
-                            {
-                                var responseString = await reader.ReadToEndAsync();
-                                var responseJson = JObject.Parse(responseString);
+                            var responseString = await reader.ReadToEndAsync();
+                            var responseJson = JObject.Parse(responseString);
 
-                                if (responseJson["statusCode"].ToString() == "200")
+                            if (responseJson["statusCode"].ToString() == "200")
+                            {
+                                if (responseJson["output"].ToString().Trim() == testCase.Item2.Trim())
                                 {
-                                    if (responseJson["output"].ToString().Trim() == testCase.Item2.Trim())
+                                    passedList.Add($"Test case {testCase.Item1} passed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
+                                }
+                                else
+                                {
+                                    failedList.Add($"Test case {testCase.Item1} failed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
+                                }
+                                if (double.TryParse(responseJson["cpuTime"]?.ToString().Trim(), out var runTimeDecimal))
+                                {
+                                    if (runTimeDecimal > runTime)
                                     {
-                                        passedList.Add($"Test case {testCase.Item1} passed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
+                                        runTime = runTimeDecimal;
                                     }
-                                    else
+                                }
+                                if (double.TryParse(responseJson["memory"]?.ToString().Trim(), out var memoryDecimal))
+                                {
+                                    memoryDecimal /= 1024;
+                                    if (memoryDecimal > memoryUsage)
                                     {
-                                        failedList.Add($"Test case {testCase.Item1} failed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
+                                        memoryUsage = memoryDecimal;
                                     }
                                 }
                             }
                         }
                     }
+                }
             }
 
             string[] passedArray = passedList.ToArray();
             string[] failedArray = failedList.ToArray();
 
-
-            return new CodeResultDto(passedArray, failedArray);
+            return new CodeResultDto(passedArray, failedArray, runTime, memoryUsage);
         }
     }
 }
