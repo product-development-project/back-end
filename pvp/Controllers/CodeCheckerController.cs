@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using pvp.Data.Dto;
+using pvp.Data.Entities;
 using pvp.Data.Repositories;
+using System;
 using System.Net;
 using System.Text;
+using static Mysqlx.Datatypes.Scalar.Types;
 
 namespace pvp.Controllers
 {
@@ -15,10 +18,12 @@ namespace pvp.Controllers
     public class CodeCheckerController : ControllerBase
     {
         private readonly IResultRepository _resultRepository;
+        private readonly ISolutionRepository _solutionRepositry;
 
-        public CodeCheckerController(IResultRepository resultRepository)
+        public CodeCheckerController(IResultRepository resultRepository, ISolutionRepository solutionRepository)
         {
             _resultRepository = resultRepository;
+            _solutionRepositry = solutionRepository;
         }
 
         [HttpPost]
@@ -34,24 +39,30 @@ namespace pvp.Controllers
             string language = requestBody.language;
             string type = requestBody.type;
             string versionIndex = "4";
-            int id = requestBody.taskId;
+            int taskId = requestBody.taskId;
+            string userId = requestBody.userId;
+
             var testCases = new List<Tuple<string, string>>();
 
             if (type == "exercise")
             {
                 string exerciseName = requestBody.name;
 
-                var results = await _resultRepository.GetManyAsyncByTask(id);
+                var results = await _resultRepository.GetManyAsyncByTask(taskId);
                 testCases = results.Select(o => Tuple.Create(o.Duomenys, o.Rezultatas)).ToList();
             }
+
+            int amountOfTests = testCases.Count;
 
             List<string> passedList = new List<string> { };
             List<string> failedList = new List<string> { };
             double runTime = 0;
             double memoryUsage = 0;
+            int testCaseNumber = 0;
 
             foreach (var testCase in testCases)
             {
+                testCaseNumber++;
                 var request = (HttpWebRequest)WebRequest.Create(endpoint);
                 request.Method = "POST";
                 request.ContentType = "application/json";
@@ -88,11 +99,11 @@ namespace pvp.Controllers
                             {
                                 if (responseJson["output"].ToString().Trim() == testCase.Item2.Trim())
                                 {
-                                    passedList.Add($"Test case {testCase.Item1} passed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
+                                    passedList.Add($"Test case {testCaseNumber} passed.");
                                 }
                                 else
                                 {
-                                    failedList.Add($"Test case {testCase.Item1} failed. Expected: {testCase.Item2}. Actual: {responseJson["output"].ToString().Trim()}");
+                                    failedList.Add($"Test case {testCaseNumber} failed.");
                                 }
                                 if (double.TryParse(responseJson["cpuTime"]?.ToString().Trim(), out var runTimeDecimal))
                                 {
@@ -115,10 +126,94 @@ namespace pvp.Controllers
                 }
             }
 
+            // paimti id iš lentelės prisijunges pagal userId?
+            int userid = 4; //pplaceholder
+
+            var solution = await _solutionRepositry.GetAsyncByUserIdAndTaskId(userid, taskId);
+            var codeInBytes = Encoding.UTF8.GetBytes(code);
+
             string[] passedArray = passedList.ToArray();
             string[] failedArray = failedList.ToArray();
 
+            if (solution == null)
+            {
+                var result = new Sprendimas
+                {
+                    Programa = codeInBytes,
+                    ProgramosLaikas = runTime,
+                    RamIsnaudojimas = memoryUsage,
+                    Prisijunge_id = userid,
+                    //ParinktosUzduotys_id = , kas čia nesuprantu xd
+                    Teisingumas = getTaskPoints(passedArray, amountOfTests),
+                    ResursaiTaskai = getRamUsagePoints(memoryUsage),
+                    ProgramosLaikasTaskai = getRunTimePoints(runTime)
+                };
+
+                await _solutionRepositry.CreateAsync(result);
+            } else
+            {
+                solution.Programa = codeInBytes;
+                solution.ProgramosLaikas = runTime;
+                solution.RamIsnaudojimas = memoryUsage;
+                solution.Teisingumas = getTaskPoints(passedArray, amountOfTests);
+                solution.ResursaiTaskai = getRamUsagePoints(memoryUsage);
+                solution.ProgramosLaikasTaskai = getRunTimePoints(runTime);
+                await _solutionRepositry.UpdateAsync(solution);
+            }
+            
             return new CodeResultDto(passedArray, failedArray, runTime, memoryUsage);
+        }
+
+        private int getTaskPoints(string[] passed, int amountOfTests)
+        {
+            int score = 0;
+
+            if (passed.Length == amountOfTests)
+            {
+                score += 10 * amountOfTests;
+            }
+            else
+            {
+                score += 5 * amountOfTests;
+            }
+
+            return score;
+        }
+
+        private int getRamUsagePoints(double memoryUsage)
+        {
+            int score = 0;
+
+            if (memoryUsage < 5.0)
+            {
+                score += 15;
+            }
+            else if (memoryUsage < 10.0)
+            {
+                score += 10;
+            }
+            else if (memoryUsage < 20.0)
+            {
+                score += 5;
+            }
+
+            return score;
+        }
+
+        private int getRunTimePoints(double runTime)
+        {
+            int score = 0;
+
+            if (runTime < 0.001)
+            {
+                score += 20;
+            }
+            else if (runTime < 0.05)
+            {
+                score += 10;
+            }
+
+            return score;
         }
     }
 }
