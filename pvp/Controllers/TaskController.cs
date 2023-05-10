@@ -42,10 +42,12 @@ namespace pvp.Controllers
         [Authorize(Roles = UserRoles.CompanyAndAdmin)]
         public async Task<ActionResult<TaskDto>> Create(CreateTaskDto createTaskDto) 
         {
+            var codeInBytes = Encoding.UTF8.GetBytes(createTaskDto.Problem);
+
             var task = new Uzduotys
             {
                 Pavadinimas = createTaskDto.Name,
-                Problema = createTaskDto.Problem,
+                Problema = codeInBytes,
                 Sudetingumas = createTaskDto.Difficulty,
                 Patvirtinta = createTaskDto.Confirmed,
                 Mokomoji = createTaskDto.Educational,

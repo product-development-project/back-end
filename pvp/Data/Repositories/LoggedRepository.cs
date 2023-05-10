@@ -6,12 +6,12 @@ namespace pvp.Data.Repositories
         public interface ILoggedRepository
         {
             Task<Prisijunge?> GetAsync(int id);
+            Task<Prisijunge?> GetAsyncByUserIdTaskId(string userId, int taskId);
             Task<IReadOnlyList<Prisijunge>> GetManyAsync();
             Task CreateAsync(Prisijunge Prisijunge);
             Task UpdateAsync(Prisijunge Prisijunge);
             Task DeleteAsync(Prisijunge Prisijunge);
         }
-
 
 
         public class LoggedRepository : ILoggedRepository
@@ -25,6 +25,10 @@ namespace pvp.Data.Repositories
             public async Task<Prisijunge?> GetAsync(int id)
             {
                 return await _context.prisijunges.FirstOrDefaultAsync(x => x.Id == id);
+            }
+            public async Task<Prisijunge?> GetAsyncByUserIdTaskId(string userId, int taskId)
+            {
+                return await _context.prisijunges.FirstOrDefaultAsync(x => x.UserId == userId && x.Uzduotys_id == taskId);
             }
             public async Task<IReadOnlyList<Prisijunge>> GetManyAsync()
             {

@@ -356,9 +356,6 @@ namespace pvp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CpuIsnaudojimas")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ParinktosUzduotys_id")
                         .HasColumnType("int");
 
@@ -368,14 +365,14 @@ namespace pvp.Migrations
                     b.Property<byte[]>("Programa")
                         .HasColumnType("longblob");
 
-                    b.Property<int>("ProgramosLaikasSek")
-                        .HasColumnType("int");
+                    b.Property<int>("ProgramosLaikas")
+                        .HasColumnType("double");
 
                     b.Property<int>("ProgramosLaikasTaskai")
                         .HasColumnType("int");
 
                     b.Property<int>("RamIsnaudojimas")
-                        .HasColumnType("int");
+                        .HasColumnType("double");
 
                     b.Property<int>("ResursaiTaskai")
                         .HasColumnType("int");

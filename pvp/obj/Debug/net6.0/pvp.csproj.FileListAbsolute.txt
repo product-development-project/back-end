@@ -285,7 +285,6 @@ C:\Users\Marijus\OneDrive\Stalinis kompiuteris\back-end\pvp\obj\Debug\net6.0\pvp
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\back-end\pvp\obj\Debug\net6.0\ref\pvp.dll
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\bin\Debug\net6.0\appsettings.json
-C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\bin\Debug\net6.0\Controllers\test-cases.json
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\bin\Debug\net6.0\pvp.exe
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\bin\Debug\net6.0\pvp.deps.json
 C:\Users\Marijus\OneDrive\Stalinis kompiuteris\PVP\back-end\pvp\bin\Debug\net6.0\pvp.runtimeconfig.json
