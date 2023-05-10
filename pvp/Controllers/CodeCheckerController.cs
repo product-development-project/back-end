@@ -5,10 +5,10 @@ using Newtonsoft.Json.Linq;
 using pvp.Data.Dto;
 using pvp.Data.Entities;
 using pvp.Data.Repositories;
-using System;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
-using static Mysqlx.Datatypes.Scalar.Types;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace pvp.Controllers
 {
@@ -18,11 +18,13 @@ namespace pvp.Controllers
     public class CodeCheckerController : ControllerBase
     {
         private readonly IResultRepository _resultRepository;
+        private readonly ILoggedRepository _loggedRepository;
         private readonly ISolutionRepository _solutionRepositry;
 
-        public CodeCheckerController(IResultRepository resultRepository, ISolutionRepository solutionRepository)
+        public CodeCheckerController(IResultRepository resultRepository, ISolutionRepository solutionRepository, ILoggedRepository loggedRepository)
         {
             _resultRepository = resultRepository;
+            _loggedRepository = loggedRepository;
             _solutionRepositry = solutionRepository;
         }
 
@@ -126,40 +128,38 @@ namespace pvp.Controllers
                 }
             }
 
-            // paimti id iš lentelės prisijunges pagal userId?
-            int userid = 4; //pplaceholder
+                var loggedUser = await _loggedRepository.GetAsyncByUserIdTaskId(userId, taskId);
+                var solution = await _solutionRepositry.GetAsyncByUserIdAndTaskId(loggedUser.Id, taskId);
+                var codeInBytes = Encoding.UTF8.GetBytes(code);
 
-            var solution = await _solutionRepositry.GetAsyncByUserIdAndTaskId(userid, taskId);
-            var codeInBytes = Encoding.UTF8.GetBytes(code);
+                string[] passedArray = passedList.ToArray();
+                string[] failedArray = failedList.ToArray();
 
-            string[] passedArray = passedList.ToArray();
-            string[] failedArray = failedList.ToArray();
-
-            if (solution == null)
-            {
-                var result = new Sprendimas
+                if (solution == null && loggedUser == null)
                 {
-                    Programa = codeInBytes,
-                    ProgramosLaikas = runTime,
-                    RamIsnaudojimas = memoryUsage,
-                    Prisijunge_id = userid,
-                    ParinktosUzduotys_id = type == "exercise" ? null : 1,
-                    Teisingumas = getTaskPoints(passedArray, amountOfTests),
-                    ResursaiTaskai = getRamUsagePoints(memoryUsage),
-                    ProgramosLaikasTaskai = getRunTimePoints(runTime)
-                };
+                    var result = new Sprendimas
+                    {
+                        Programa = codeInBytes,
+                        ProgramosLaikas = runTime,
+                        RamIsnaudojimas = memoryUsage,
+                        Prisijunge_id = loggedUser.Id,
+                        ParinktosUzduotys_id = type == "exercise" ? null : 1,
+                        Teisingumas = getTaskPoints(passedArray, amountOfTests),
+                        ResursaiTaskai = getRamUsagePoints(memoryUsage),
+                        ProgramosLaikasTaskai = getRunTimePoints(runTime)
+                    };
 
-                await _solutionRepositry.CreateAsync(result);
-            } else
-            {
-                solution.Programa = codeInBytes;
-                solution.ProgramosLaikas = runTime;
-                solution.RamIsnaudojimas = memoryUsage;
-                solution.Teisingumas = getTaskPoints(passedArray, amountOfTests);
-                solution.ResursaiTaskai = getRamUsagePoints(memoryUsage);
-                solution.ProgramosLaikasTaskai = getRunTimePoints(runTime);
-                await _solutionRepositry.UpdateAsync(solution);
-            }
+                    await _solutionRepositry.CreateAsync(result);
+                } else
+                {
+                    solution.Programa = codeInBytes;
+                    solution.ProgramosLaikas = runTime;
+                    solution.RamIsnaudojimas = memoryUsage;
+                    solution.Teisingumas = getTaskPoints(passedArray, amountOfTests);
+                    solution.ResursaiTaskai = getRamUsagePoints(memoryUsage);
+                    solution.ProgramosLaikasTaskai = getRunTimePoints(runTime);
+                    await _solutionRepositry.UpdateAsync(solution);
+                }
             
             return new CodeResultDto(passedArray, failedArray, runTime, memoryUsage);
         }
