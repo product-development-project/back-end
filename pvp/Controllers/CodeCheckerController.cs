@@ -143,7 +143,7 @@ namespace pvp.Controllers
                     ProgramosLaikas = runTime,
                     RamIsnaudojimas = memoryUsage,
                     Prisijunge_id = userid,
-                    //ParinktosUzduotys_id = , kas čia nesuprantu xd
+                    ParinktosUzduotys_id = type == "exercise" ? null : 1,
                     Teisingumas = getTaskPoints(passedArray, amountOfTests),
                     ResursaiTaskai = getRamUsagePoints(memoryUsage),
                     ProgramosLaikasTaskai = getRunTimePoints(runTime)
