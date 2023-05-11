@@ -15,11 +15,12 @@ namespace pvp.Data
         public DbSet<Tipas> tipas { get; set; }
         public DbSet<Uzduotys> uzduotys { get; set;}
         public DbSet<Help> help { get; set;}
+        public DbSet<Kompanija> kompanija { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseMySQL("Data Source=127.0.0.1;port=3306;Initial Catalog=mydb;User Id=root;Password=root;SslMode=none;Convert Zero Datetime=True;");
-            optionsBuilder.UseMySQL("Data Source=127.0.0.1;port=3306;Initial Catalog=mydb;User Id=root;Password=;SslMode=none;Convert Zero Datetime=True;");
+            optionsBuilder.UseMySQL("Data Source=127.0.0.1;port=3306;Initial Catalog=mydb;User Id=root;Password=root;SslMode=none;Convert Zero Datetime=True;");
+            //optionsBuilder.UseMySQL("Data Source=127.0.0.1;port=3306;Initial Catalog=mydb;User Id=root;Password=;SslMode=none;Convert Zero Datetime=True;");
         }
     }
 }

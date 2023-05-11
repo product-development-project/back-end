@@ -11,7 +11,7 @@ using pvp.Data;
 namespace pvp.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20230504113228_initial migration")]
+    [Migration("20230511160931_initial migration")]
     partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,6 +250,43 @@ namespace pvp.Migrations
                     b.ToTable("help");
                 });
 
+            modelBuilder.Entity("pvp.Data.Entities.Kompanija", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("adresas")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("pavadinimas")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("svetaine")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("telefonas")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("kompanija");
+                });
+
             modelBuilder.Entity("pvp.Data.Entities.ParinktosUzduotys", b =>
                 {
                     b.Property<int>("id")
@@ -358,9 +395,6 @@ namespace pvp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CpuIsnaudojimas")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ParinktosUzduotys_id")
                         .HasColumnType("int");
 
@@ -370,14 +404,14 @@ namespace pvp.Migrations
                     b.Property<byte[]>("Programa")
                         .HasColumnType("longblob");
 
-                    b.Property<int>("ProgramosLaikasSek")
-                        .HasColumnType("int");
+                    b.Property<double>("ProgramosLaikas")
+                        .HasColumnType("double");
 
                     b.Property<int>("ProgramosLaikasTaskai")
                         .HasColumnType("int");
 
-                    b.Property<int>("RamIsnaudojimas")
-                        .HasColumnType("int");
+                    b.Property<double>("RamIsnaudojimas")
+                        .HasColumnType("double");
 
                     b.Property<int>("ResursaiTaskai")
                         .HasColumnType("int");
@@ -553,6 +587,17 @@ namespace pvp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("pvp.Data.Entities.Kompanija", b =>
+                {
+                    b.HasOne("pvp.Data.Entities.User", "user")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("pvp.Data.Entities.Prisijunge", b =>
