@@ -95,6 +95,8 @@ namespace pvp.Controllers
             return new AdDto(ad.id, ad.Pavadinimas, ad.Aprasymas, ad.Pradzia, ad.Pabaiga);
         }
 
+
+
         [HttpPost]
         [Authorize(Roles = UserRoles.Company)]
         public async Task<ActionResult<AdDto>> Create(CreateAdDto createAdDto)
