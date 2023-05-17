@@ -238,5 +238,40 @@ namespace pvp.Controllers
             procentasresursai = (int)(((resursaitaskai - usersSolution.ResursaiTaskai) * 100) / usersSolution.ResursaiTaskai);
             return new TaskAnalysisDto(procentasteisingumas, procentaslaikas, procentasresursai, procentaitotal);
         }
+
+        [HttpGet]
+        [Route("PointsAd/{adId}/{UserName}")]
+        //[Authorize(Roles = UserRoles.Alll)]
+        public async Task<ActionResult<RatingsDto>> GetPointsForAd(int adId, string UserName)
+        {
+            var user = await _userInfoRepositry.GetAsync(UserName);
+            if (user == null) { return NotFound(); }
+
+
+            var loggedUsers = await _loggedRepository.GetManyAsync();
+            loggedUsers = loggedUsers.Where(o => o.UserId == user.Id).ToList();
+            loggedUsers = loggedUsers.Where(o => o.Skelbimas_id == adId).ToList();
+            var users = await _userInfoRepositry.GetManyAsync();
+            var solutions = await _solutionRepository.GetManyAsync();
+
+            var ratings = solutions.Join(loggedUsers, s => s.Prisijunge_id, p => p.Id, (s, p) => new { Solution = s, LoggedUser = p })
+                       .Join(users, sp => sp.LoggedUser.UserId, u => u.Id, (sp, u) => new { sp.Solution, User = u })
+                       .GroupBy(sp => sp.User.UserName)
+                       .Select(g => new
+                       {
+                           UserName = g.Key,
+                           TeisingumasTaskai = g.Sum(sp => sp.Solution.Teisingumas),
+                           ProgramosLaikasTaskai = g.Sum(sp => sp.Solution.ProgramosLaikasTaskai),
+                           ResursaiTaskai = g.Sum(sp => sp.Solution.ResursaiTaskai),
+                           TotalPoints = g.Sum(sp => sp.Solution.Teisingumas + sp.Solution.ProgramosLaikasTaskai + sp.Solution.ResursaiTaskai)
+                       }).FirstOrDefault();
+
+            Console.WriteLine(ratings);
+            if (ratings == null)
+            {
+                return new RatingsDto(UserName, 0, 0, 0, 0); // Return appropriate response if ratings is null
+            }
+            return  new RatingsDto(ratings.UserName, ratings.TeisingumasTaskai, ratings.ProgramosLaikasTaskai, ratings.ResursaiTaskai, ratings.TotalPoints);
+        }
     }
 }
