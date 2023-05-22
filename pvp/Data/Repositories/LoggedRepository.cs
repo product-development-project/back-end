@@ -6,6 +6,7 @@ namespace pvp.Data.Repositories
         public interface ILoggedRepository
         {
             Task<Prisijunge?> GetAsync(int id);
+            Task<IReadOnlyList<Prisijunge?>> GetAsyncByUserId(string id);
             Task<Prisijunge?> GetAsyncByUserIdTaskId(string userId, int taskId);
             Task<IReadOnlyList<Prisijunge>> GetManyAsync();
             Task CreateAsync(Prisijunge Prisijunge);
@@ -25,6 +26,10 @@ namespace pvp.Data.Repositories
             public async Task<Prisijunge?> GetAsync(int id)
             {
                 return await _context.prisijunges.FirstOrDefaultAsync(x => x.Id == id);
+            }
+            public async Task<IReadOnlyList<Prisijunge>> GetAsyncByUserId(string id)
+            {
+                return await _context.prisijunges.Where(x => x.UserId == id).ToListAsync();
             }
             public async Task<Prisijunge?> GetAsyncByUserIdTaskId(string userId, int taskId)
             {

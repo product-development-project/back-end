@@ -8,6 +8,8 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Identity;
+using pvp.Data.Auth;
 
 namespace pvp.Controllers
 {
@@ -17,10 +19,12 @@ namespace pvp.Controllers
     {
         private readonly ILoggedRepository _LoggedRepository;
         private readonly IAuthorizationService _AuthorizationService;
-        public LoggedController(ILoggedRepository LoggedRepository, IAuthorizationService authorizationService)
+        private readonly UserManager<RestUsers> _useUserManager;
+        public LoggedController(ILoggedRepository LoggedRepository, IAuthorizationService authorizationService, UserManager<RestUsers> useUserManager)
         {
             _LoggedRepository = LoggedRepository;
             _AuthorizationService= authorizationService;
+            _useUserManager = useUserManager;
         }
 
         [HttpGet]
@@ -40,6 +44,17 @@ namespace pvp.Controllers
             if (Logged == null) { return NotFound(); }
 
             return new LoggedDto(Logged.Id, Logged.Skelbimas_id, Logged.Uzduotys_id);
+        }
+
+        [HttpGet]
+        [Route("user/{userName}")]
+        public async Task<IEnumerable<LoggedDto>> GetUserResults(string userName)
+        {
+            var user = await _useUserManager.FindByNameAsync(userName);
+            var result = await _LoggedRepository.GetAsyncByUserId(user.Id);
+            var result2 = result.Where(x => x.Uzduotys_id != null && x.Skelbimas_id == null).ToList();
+
+            return result2.Select(o => new LoggedDto(o.Id, o.Skelbimas_id, o.Uzduotys_id));
         }
 
         [HttpPost]

@@ -672,3 +672,4 @@ C:\Users\valak\OneDrive\Stalinis kompiuteris\produkto vystimo projektas\backend3
 C:\Users\valak\OneDrive\Stalinis kompiuteris\produkto vystimo projektas\backend3\back-end\pvp\obj\Debug\net6.0\pvp.pdb
 C:\Users\valak\OneDrive\Stalinis kompiuteris\produkto vystimo projektas\backend3\back-end\pvp\obj\Debug\net6.0\pvp.genruntimeconfig.cache
 C:\Users\valak\OneDrive\Stalinis kompiuteris\produkto vystimo projektas\backend3\back-end\pvp\obj\Debug\net6.0\ref\pvp.dll
+C:\Users\Mano\Desktop\PVP\back-end\pvp\bin\Debug\net6.0\Newtonsoft.Json.dll
