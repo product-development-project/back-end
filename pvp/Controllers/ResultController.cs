@@ -7,6 +7,8 @@ using MySqlX.XDevAPI.Common;
 using pvp.Data.Entities;
 using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.AspNetCore.Identity;
+using pvp.Data.Auth;
 
 namespace pvp.Controllers
 {
@@ -42,7 +44,7 @@ namespace pvp.Controllers
             return new ResultDto(result.Id, result.Duomenys, result.Rezultatas, result.Pavyzdine, result.Uzduotis_id);
         }
 
-        
+
         [HttpPost]
         [Authorize(Roles = UserRoles.User)]
         public async Task<ActionResult<ResultDto>> Create(CreateResultDto createResultDto)
