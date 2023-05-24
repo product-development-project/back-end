@@ -42,11 +42,12 @@ namespace pvp.Controllers
             string type = requestBody.type;
             string versionIndex = "4";
             int taskId = requestBody.taskId;
+            int? adId = requestBody.adId;
             string userId = requestBody.userId;
 
             var testCases = new List<Tuple<string, string>>();
 
-            if (type == "exercise")
+            if (type == "exercise" || type == "competition")
             {
                 string exerciseName = requestBody.name;
 
@@ -128,68 +129,122 @@ namespace pvp.Controllers
                 }
             }
 
-            var loggedUser = await _loggedRepository.GetAsyncByUserIdTaskId(userId, taskId);
-
-            if (loggedUser == null && type == "exercise")
-            {
-                var logged = new Prisijunge
-                {
-                    UserId = userId,
-                    Skelbimas_id = null,
-                    Uzduotys_id = taskId
-                };
-
-                await _loggedRepository.CreateAsync(logged);
-                loggedUser = await _loggedRepository.GetAsyncByUserIdTaskId(userId, taskId);
-            }
-
-            var solution = await _solutionRepositry.GetAsyncByUserIdAndTaskId(loggedUser.Id, taskId);
-            var codeInBytes = Encoding.UTF8.GetBytes(code);
-
             string[] passedArray = passedList.ToArray();
             string[] failedArray = failedList.ToArray();
 
-            if (solution == null)
+            if (type == "exercise")
             {
-                var result = new Sprendimas
+                var loggedUser = await _loggedRepository.GetAsyncByUserIdTaskId(userId, taskId);
+
+                if (loggedUser == null) {
+                    var logged = new Prisijunge
+                    {
+                        UserId = userId,
+                        Skelbimas_id = null,
+                        Uzduotys_id = taskId
+                    };
+
+                    await _loggedRepository.CreateAsync(logged);
+                    loggedUser = await _loggedRepository.GetAsyncByUserIdTaskId(userId, taskId);
+                }
+
+                var solution = await _solutionRepositry.GetAsyncByUserId(loggedUser.Id);
+                var codeInBytes = Encoding.UTF8.GetBytes(code);
+
+                if (solution == null)
                 {
-                    Programa = codeInBytes,
-                    ProgramosLaikas = runTime,
-                    RamIsnaudojimas = memoryUsage,
-                    Prisijunge_id = loggedUser.Id,
-                    ParinktosUzduotys_id = type == "exercise" ? null : 1,
-                    Teisingumas = getTaskPoints(passedArray, amountOfTests),
-                    ResursaiTaskai = getRamUsagePoints(memoryUsage),
-                    ProgramosLaikasTaskai = getRunTimePoints(runTime)
-                };
+                    var result = new Sprendimas
+                    {
+                        Programa = codeInBytes,
+                        ProgramosLaikas = runTime,
+                        RamIsnaudojimas = memoryUsage,
+                        Prisijunge_id = loggedUser.Id,
+                        ParinktosUzduotys_id = null,
+                        Teisingumas = getTaskPoints(passedArray, amountOfTests),
+                        ResursaiTaskai = getRamUsagePoints(memoryUsage),
+                        ProgramosLaikasTaskai = getRunTimePoints(runTime)
+                    };
 
-                await _solutionRepositry.CreateAsync(result);
+                    await _solutionRepositry.CreateAsync(result);
+                }
+                else
+                {
+                    solution.Programa = codeInBytes;
+                    solution.ProgramosLaikas = runTime;
+                    solution.RamIsnaudojimas = memoryUsage;
+                    solution.Teisingumas = getTaskPoints(passedArray, amountOfTests);
+                    solution.ResursaiTaskai = getRamUsagePoints(memoryUsage);
+                    solution.ProgramosLaikasTaskai = getRunTimePoints(runTime);
+
+                    await _solutionRepositry.UpdateAsync(solution);
+                }
             }
-            else
+            else if (type == "competition")
             {
-                solution.Programa = codeInBytes;
-                solution.ProgramosLaikas = runTime;
-                solution.RamIsnaudojimas = memoryUsage;
-                solution.Teisingumas = getTaskPoints(passedArray, amountOfTests);
-                solution.ResursaiTaskai = getRamUsagePoints(memoryUsage);
-                solution.ProgramosLaikasTaskai = getRunTimePoints(runTime);
-                await _solutionRepositry.UpdateAsync(solution);
+                var loggedUser = await _loggedRepository.GetAsyncByUserIdAdIdTaskId(userId, adId, taskId);
+
+                if (loggedUser == null && adId != null && taskId != null)
+                {
+                    var logged = new Prisijunge
+                    {
+                        UserId = userId,
+                        Skelbimas_id = adId,
+                        Uzduotys_id = taskId
+                    };
+
+                    await _loggedRepository.CreateAsync(logged);
+                    loggedUser = await _loggedRepository.GetAsyncByUserIdAdIdTaskId(userId, adId, taskId);
+                }
+
+                var solution = await _solutionRepositry.GetAsyncByUserId(loggedUser.Id);
+                var codeInBytes = Encoding.UTF8.GetBytes(code);
+
+                if (solution == null)
+                {
+                    var result = new Sprendimas
+                    {
+                        Programa = codeInBytes,
+                        ProgramosLaikas = runTime,
+                        RamIsnaudojimas = memoryUsage,
+                        Prisijunge_id = loggedUser.Id,
+                        ParinktosUzduotys_id = null,
+                        Teisingumas = getTaskPoints(passedArray, amountOfTests),
+                        ResursaiTaskai = getRamUsagePoints(memoryUsage),
+                        ProgramosLaikasTaskai = getRunTimePoints(runTime)
+                    };
+
+                    await _solutionRepositry.CreateAsync(result);
+                }
+                else
+                {
+                    solution.Programa = codeInBytes;
+                    solution.ProgramosLaikas = runTime;
+                    solution.RamIsnaudojimas = memoryUsage;
+                    solution.Teisingumas = getTaskPoints(passedArray, amountOfTests);
+                    solution.ResursaiTaskai = getRamUsagePoints(memoryUsage);
+                    solution.ProgramosLaikasTaskai = getRunTimePoints(runTime);
+                    await _solutionRepositry.UpdateAsync(solution);
+                }
             }
 
-            return new CodeResultDto(passedArray, failedArray, runTime, memoryUsage);
+            return new CodeResultDto(passedArray, failedArray, runTime, memoryUsage, getTaskPoints(passedArray, amountOfTests), getRamUsagePoints(memoryUsage), getRunTimePoints(runTime));
         }
 
         private int getTaskPoints(string[] passed, int amountOfTests)
         {
             int score = 0;
-
-            if (passed.Length == amountOfTests)
+            if (passed.Length == 0)
             {
-                score += 10 * amountOfTests;
+                return score;
+            }
+            else if (passed.Length == amountOfTests)
+            {
+                score += 100;
             }
             else
             {
-                score += 5 * amountOfTests;
+                int pointsTestCase = 100 / amountOfTests;
+                score += 100 - (pointsTestCase * (amountOfTests - passed.Length));
             }
 
             return score;
@@ -199,15 +254,19 @@ namespace pvp.Controllers
         {
             int score = 0;
 
-            if (memoryUsage < 5.0)
+            if (memoryUsage == 0)
+            {
+                return score;
+            }
+            else if (memoryUsage < 7.0)
             {
                 score += 15;
             }
-            else if (memoryUsage < 10.0)
+            else if (memoryUsage < 7.7)
             {
                 score += 10;
             }
-            else if (memoryUsage < 20.0)
+            else if (memoryUsage < 8.0)
             {
                 score += 5;
             }
@@ -218,8 +277,11 @@ namespace pvp.Controllers
         private int getRunTimePoints(double runTime)
         {
             int score = 0;
-
-            if (runTime < 0.001)
+            if (runTime == 0)
+            {
+                return score;
+            }
+            else if (runTime < 0.01)
             {
                 score += 20;
             }

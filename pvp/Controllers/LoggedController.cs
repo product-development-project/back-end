@@ -47,6 +47,15 @@ namespace pvp.Controllers
         }
 
         [HttpGet]
+        [Route("ad/{adId}/user/{userId}")]
+        public async Task<ActionResult<LoggedDto>> GetLoggedUser(string userId, int adId)
+        {
+            var result = await _LoggedRepository.GetAsyncByUserIdAdId(userId, adId);
+            if (result == null) { return NotFound(); }
+            return new LoggedDto(result.Id, result.Skelbimas_id, result.Uzduotys_id);
+        }
+
+        [HttpGet]
         [Route("user/{userName}")]
         public async Task<IEnumerable<LoggedDto>> GetUserResults(string userName)
         {
