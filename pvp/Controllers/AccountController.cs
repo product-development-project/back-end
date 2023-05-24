@@ -43,7 +43,7 @@ namespace pvp.Controllers
             }
             if (user == null) { return NotFound(); }
             
-            return new UserInfoDto(user.Id, user.UserName, user.Email);
+            return new UserInfoDto(user.UserName, user.Email, user.PhoneNumber);
         }
 
         [HttpPut]
@@ -71,9 +71,10 @@ namespace pvp.Controllers
 
             user.UserName = updateUserInfoDto.Name;
             user.Email = updateUserInfoDto.Email;
+            user.PhoneNumber = updateUserInfoDto.PhoneNumber;
 
             await _userInfoRepositry.UpdateAsync(user);
-            return Ok(new UserInfoDto(user.Id, user.UserName, user.Email));
+            return Ok(new UserInfoDto(user.UserName, user.Email, user.PhoneNumber));
         }
 
         [HttpDelete]

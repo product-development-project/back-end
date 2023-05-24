@@ -266,7 +266,6 @@ namespace pvp.Controllers
                            TotalPoints = g.Sum(sp => sp.Solution.Teisingumas + sp.Solution.ProgramosLaikasTaskai + sp.Solution.ResursaiTaskai)
                        }).FirstOrDefault();
 
-            Console.WriteLine(ratings);
             if (ratings == null)
             {
                 return new RatingsDto(UserName, 0, 0, 0, 0); // Return appropriate response if ratings is null

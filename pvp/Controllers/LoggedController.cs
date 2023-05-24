@@ -70,14 +70,18 @@ namespace pvp.Controllers
         [Authorize(Roles = UserRoles.User)]
         public async Task<ActionResult<LoggedDto>> Create(CreateLoggedDto createLoggedDto)
         {
-            var Logged = new Prisijunge
+            var Logged = await _LoggedRepository.GetAsyncByUserId(User.FindFirstValue(JwtRegisteredClaimNames.Sub));
+            if (Logged != null) { return NotFound(); }
+
+            var newLogged = new Prisijunge
             {
                 Skelbimas_id = createLoggedDto.Ad_id,
                 Uzduotys_id = createLoggedDto.Task_id,
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
-            await _LoggedRepository.CreateAsync(Logged);
-            return Created("", new LoggedDto(Logged.Id, Logged.Skelbimas_id, Logged.Uzduotys_id));
+
+            await _LoggedRepository.CreateAsync(newLogged);
+            return Created("", new LoggedDto(newLogged.Id, newLogged.Skelbimas_id, newLogged.Uzduotys_id));
         }
 
         //[HttpPut]

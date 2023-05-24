@@ -49,7 +49,7 @@ namespace pvp.Controllers
         public async Task<IEnumerable<UserInfoDto>> GetManyApproveCompany()
         {
             var users = await _useUserManager.GetUsersInRoleAsync(UserRoles.User);
-            return users.Select(o => new UserInfoDto(o.Id, o.UserName, o.Email));
+            return users.Select(o => new UserInfoDto(o.UserName, o.Email, o.PhoneNumber));
         }
 
         [HttpGet]

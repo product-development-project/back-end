@@ -33,13 +33,20 @@ namespace pvp.Controllers
             var user = await _useUserManager.FindByNameAsync(registerUserDto.UserName);
             if (user != null) 
             {
-                return BadRequest("User already exist");
+                return BadRequest("Username already exists");
+            }
+
+            var email = await _useUserManager.FindByEmailAsync(registerUserDto.Email);
+            if (email != null)
+            {
+                return BadRequest("Email already exists");
             }
 
             var newUser = new RestUsers
             {
                 Email = registerUserDto.Email,
-                UserName = registerUserDto.UserName
+                UserName = registerUserDto.UserName,
+                PhoneNumber = registerUserDto.PhoneNumber
             };
             var createUser = await _useUserManager.CreateAsync(newUser, registerUserDto.Password);
             if (!createUser.Succeeded) 
@@ -48,7 +55,7 @@ namespace pvp.Controllers
             }
 
             await _useUserManager.AddToRoleAsync(newUser, UserRoles.User);
-            return CreatedAtAction(nameof(Register), new UserDto(newUser.Id.ToString(), newUser.UserName, newUser.Email));
+            return CreatedAtAction(nameof(Register), new UserDto(newUser.Id.ToString(), newUser.UserName, newUser.Email, newUser.PhoneNumber));
         }
 
         [HttpPost]
