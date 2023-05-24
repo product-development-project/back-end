@@ -85,6 +85,7 @@ namespace pvp.Controllers
         public async Task<IEnumerable<TaskDto>> GetMany()
         {
             var tasks = await _taskRepository.GetManyAsync();
+            tasks = tasks.Where(o => o.Mokomoji == true).ToList();
             return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
@@ -97,6 +98,7 @@ namespace pvp.Controllers
         public async Task<IEnumerable<TaskDto>> GetManyFiltered(string difficulty, int typeId)
         {
             var tasks = await _taskRepository.GetManyAsync();
+            tasks = tasks.Where(o => o.Mokomoji == true).ToList();
             //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
             //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
             if (difficulty != "Choose" && typeId == 0)
