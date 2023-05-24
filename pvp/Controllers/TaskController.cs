@@ -9,12 +9,13 @@ using System.Security.Claims;
 using pvp.Auth.Models;
 using MySql.Data.MySqlClient;
 using System.Text;
+using MySqlX.XDevAPI.Common;
 
-namespace pvp.Controllers 
+namespace pvp.Controllers
 {
     [ApiController]
     [Route("api/Task")]
-    public class TaskController :ControllerBase
+    public class TaskController : ControllerBase
     {
         private readonly IAdRepository _adRepository;
         private readonly ILoggedRepository _loggedRepository;
@@ -39,8 +40,30 @@ namespace pvp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.CompanyAndAdmin)]
-        public async Task<ActionResult<TaskDto>> Create(CreateTaskDto createTaskDto) 
+        [Authorize(Roles = UserRoles.Company)]
+        [Route("Company")]
+        public async Task<ActionResult<TaskDto>> CreateCompany(CreateTaskDto createTaskDto)
+        {
+            var codeInBytes = Encoding.UTF8.GetBytes(createTaskDto.Problem);
+
+            var task = new Uzduotys
+            {
+                Pavadinimas = createTaskDto.Name,
+                Problema = codeInBytes,
+                Sudetingumas = createTaskDto.Difficulty,
+                Patvirtinta = false,
+                Mokomoji = false,
+                Data = createTaskDto.Date,
+                Tipas_id = createTaskDto.Type_id,
+                UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+            };
+            await _taskRepository.CreateAsync(task);
+            return Created("", new TaskDto(task.id, task.Pavadinimas, task.Problema, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<ActionResult<TaskDto>> Create(CreateTaskDto createTaskDto)
         {
             var codeInBytes = Encoding.UTF8.GetBytes(createTaskDto.Problem);
             var task = new Uzduotys
@@ -108,7 +131,7 @@ namespace pvp.Controllers
         public async Task<ActionResult> Remove(int taskId)
         {
             var task = await _taskRepository.GetAsync(taskId);
-            if (task == null) { return NotFound();}
+            if (task == null) { return NotFound(); }
             await _taskRepository.DeleteAsync(task);
             return NoContent();
         }
@@ -122,7 +145,7 @@ namespace pvp.Controllers
             selected = selected.Where(o => o.Skelbimas_id == competitionId).ToList();
 
             var result = tasks.Join(selected, task => task.id, p => p.Uzduotys_id, (task, id) => task).ToList();
-            
+
             return result.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
@@ -132,7 +155,7 @@ namespace pvp.Controllers
         {
             var competition = await _adRepository.GetAsync(competitionId);
             var task = await _taskRepository.GetAsync(taskId);
-            if(competition == null) { return NotFound(); }
+            if (competition == null) { return NotFound(); }
             if (task == null)
             {
                 return NotFound();
@@ -150,6 +173,16 @@ namespace pvp.Controllers
             };
             await _selectedTaskRepository.CreateAsync(added);
             return Ok();
+        }
+        [HttpGet]
+        [Route("ViewCompanyTask")]
+        [Authorize(Roles = UserRoles.Company)]
+        public async Task<IEnumerable<TaskDto>> GetManyTaskByCompany()
+        {
+            var UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var task = await _taskRepository.GetManyAsync();
+            task = task.Where(x => x.UserId == UserId).ToList();
+            return task.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
     }
 }

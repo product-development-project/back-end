@@ -18,11 +18,13 @@ namespace pvp.Controllers
     {
         private readonly IResultRepository _resultRepository;
         private readonly IAuthorizationService _authorizationService;
+        private readonly ITaskRepository _taskRepository;
 
-        public ResultController(IResultRepository resultRepository, IAuthorizationService authorizationService)
+        public ResultController(IResultRepository resultRepository, IAuthorizationService authorizationService, ITaskRepository taskRepository)
         {
             _resultRepository = resultRepository;
             _authorizationService = authorizationService;
+            _taskRepository = taskRepository;
         }
 
         [HttpGet]
@@ -46,22 +48,48 @@ namespace pvp.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.User)]
-        public async Task<ActionResult<ResultDto>> Create(CreateResultDto createResultDto)
+        [Authorize(Roles = UserRoles.Company)]
+        [Route("Company")]
+        public async Task<ActionResult<ResultDto>> CreateCompany(CreateResultDto createResultDto, int taskId)
         {
+            var task = await _taskRepository.GetAsync(taskId);
+            var authr = await _authorizationService.AuthorizeAsync(User, task, PolicyNames.ResourceOwner);
+            if (!authr.Succeeded)
+            {
+                return Forbid();
+            }
+
             var result = new Rezultatai
             {
                 Duomenys = createResultDto.Data,
                 Rezultatas = createResultDto.Result,
                 Pavyzdine = createResultDto.Example,
-                Uzduotis_id = createResultDto.Task_id,
+                Uzduotis_id = taskId,
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
 
             await _resultRepository.CreateAsync(result);
             return Created("", new ResultDto(result.Id, result.Duomenys, result.Rezultatas, result.Pavyzdine, result.Uzduotis_id));
         }
-        
+
+        [HttpPost]
+        [Authorize(Roles = UserRoles.Admin)]
+        [Route("Admin")]
+        public async Task<ActionResult<ResultDto>> CreateAdmin(CreateResultDto createResultDto, int taskId)
+        {
+
+            var result = new Rezultatai
+            {
+                Duomenys = createResultDto.Data,
+                Rezultatas = createResultDto.Result,
+                Pavyzdine = createResultDto.Example,
+                Uzduotis_id = taskId,
+                UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+            };
+
+            await _resultRepository.CreateAsync(result);
+            return Created("", new ResultDto(result.Id, result.Duomenys, result.Rezultatas, result.Pavyzdine, result.Uzduotis_id));
+        }
 
         [HttpPut]
         [Route("{resultId}")]
@@ -70,17 +98,17 @@ namespace pvp.Controllers
         {
             var result = await _resultRepository.GetAsync(resultId);
             if (result == null) { return NotFound(); }
- 
+
             var authr = await _authorizationService.AuthorizeAsync(User, result, PolicyNames.ResourceOwner);
             if (!authr.Succeeded)
             {
                 return Forbid();
             }
-            
+
             result.Duomenys = updateResultDto.Data;
             result.Rezultatas = updateResultDto.Result;
             result.Pavyzdine = updateResultDto.Example;
-           
+
             await _resultRepository.UpdateAsync(result);
             return Ok(new ResultDto(result.Id, result.Duomenys, result.Rezultatas, result.Pavyzdine, result.Uzduotis_id));
         }
@@ -91,9 +119,40 @@ namespace pvp.Controllers
         public async Task<ActionResult> Remove(int resultId)
         {
             var result = await _resultRepository.GetAsync(resultId);
-            if (result == null) { return NotFound();}
+            if (result == null) { return NotFound(); }
             await _resultRepository.DeleteAsync(result);
             return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("{resultId}/Company")]
+        [Authorize(Roles = UserRoles.Company)]
+        public async Task<ActionResult> RemoveCompany(int resultId)
+        {
+            var result = await _resultRepository.GetAsync(resultId);
+            var authr = await _authorizationService.AuthorizeAsync(User, result, PolicyNames.ResourceOwner);
+            if (!authr.Succeeded)
+            {
+                return Forbid();
+            }
+            if (result == null) { return NotFound(); }
+            await _resultRepository.DeleteAsync(result);
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = UserRoles.Company)]
+        [Route("GetManyByTaskForCompany")]
+        public async Task<ActionResult<IEnumerable<ResultDto>>> GetManyByTaskForCompany(int taskId)
+        {
+            var task = await _taskRepository.GetAsync(taskId);
+            var authr = await _authorizationService.AuthorizeAsync(User, task, PolicyNames.ResourceOwner);
+            if (!authr.Succeeded)
+            {
+                return Forbid();
+            }
+            var results = await _resultRepository.GetManyAsyncByTask(taskId);
+            return Ok(results.Select(o => new ResultDto(o.Id, o.Duomenys, o.Rezultatas, o.Pavyzdine, o.Uzduotis_id)));
         }
     }
 }
