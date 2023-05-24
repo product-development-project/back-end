@@ -8,6 +8,8 @@ namespace pvp.Data.Repositories
             Task<Prisijunge?> GetAsync(int id);
             Task<IReadOnlyList<Prisijunge?>> GetAsyncByUserId(string id);
             Task<Prisijunge?> GetAsyncByUserIdTaskId(string userId, int taskId);
+            Task<Prisijunge?> GetAsyncByUserIdAdId(string userId, int? adId);
+            Task<Prisijunge?> GetAsyncByUserIdAdIdTaskId(string userId, int? adId, int taskId);
             Task<IReadOnlyList<Prisijunge>> GetManyAsync();
             Task CreateAsync(Prisijunge Prisijunge);
             Task UpdateAsync(Prisijunge Prisijunge);
@@ -35,7 +37,15 @@ namespace pvp.Data.Repositories
             {
                 return await _context.prisijunges.FirstOrDefaultAsync(x => x.UserId == userId && x.Uzduotys_id == taskId);
             }
-            public async Task<IReadOnlyList<Prisijunge>> GetManyAsync()
+            public async Task<Prisijunge?> GetAsyncByUserIdAdId(string userId, int? adId)
+            {
+            return await _context.prisijunges.FirstOrDefaultAsync(x => x.UserId == userId && x.Skelbimas_id == adId);
+            }
+            public async Task<Prisijunge?> GetAsyncByUserIdAdIdTaskId(string userId, int? adId, int taskId)
+            {
+                return await _context.prisijunges.FirstOrDefaultAsync(x => x.UserId == userId && x.Skelbimas_id == adId && x.Uzduotys_id == taskId);
+            }
+        public async Task<IReadOnlyList<Prisijunge>> GetManyAsync()
             {
                 return await _context.prisijunges.ToListAsync();
             }

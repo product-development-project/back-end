@@ -66,7 +66,6 @@ namespace pvp.Controllers
         public async Task<ActionResult<TaskDto>> Create(CreateTaskDto createTaskDto) 
         {
             var codeInBytes = Encoding.UTF8.GetBytes(createTaskDto.Problem);
-
             var task = new Uzduotys
             {
                 Pavadinimas = createTaskDto.Name,
@@ -74,7 +73,7 @@ namespace pvp.Controllers
                 Sudetingumas = createTaskDto.Difficulty,
                 Patvirtinta = createTaskDto.Confirmed,
                 Mokomoji = createTaskDto.Educational,
-                Data = createTaskDto.Date,
+                Data = DateTime.UtcNow,
                 Tipas_id = createTaskDto.Type_id,
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
@@ -141,7 +140,6 @@ namespace pvp.Controllers
         [Route("Competition/{competitionId}")]
         public async Task<IEnumerable<TaskDto>> GetManyCompetition(int competitionId)
         {
-            Console.WriteLine("asdasdasd");
             var tasks = await _taskRepository.GetManyAsync();
             var selected = await _selectedTaskRepository.GetManyAsync();
             selected = selected.Where(o => o.Skelbimas_id == competitionId).ToList();
@@ -162,7 +160,6 @@ namespace pvp.Controllers
             {
                 return NotFound();
             }
-            Console.WriteLine(Request.Headers["Authorization"].ToString());
             var authr = await _authorizationService.AuthorizeAsync(User, competition, PolicyNames.ResourceOwner);
             if (!authr.Succeeded)
             {

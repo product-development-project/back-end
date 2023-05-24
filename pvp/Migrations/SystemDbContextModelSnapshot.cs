@@ -380,6 +380,10 @@ namespace pvp.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<bool>("Pradetas")
+                        .HasDefaultValue(false)
+                        .HasColumnType("boolean");
+
                     b.HasKey("id");
 
                     b.HasIndex("UserId");

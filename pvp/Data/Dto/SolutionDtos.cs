@@ -10,7 +10,7 @@
     //public int RamIsnaudojimas { get; set; }
     //public int Prisijunge_id { get; set; }
     //public int ParinktosUzduotys_id { get; set; }
-
+    
     public record SolutionDto(int id, Byte[] Program, int Correctness, int ProgramTimePoints, int ResourcesPoints, double ProgramTime, double RamUsage, int Logged_id, int? SelectedTask_id);
     public record CreateSolutionDto(int id, Byte[] Program, int Correctness, int ProgramTimePoints, int ResourcesPoints, double ProgramTime, double RamUsage, int Logged_id, int? SelectedTask_id);
     public record UpdateSolutionDto(int id, Byte[] Program, int Correctness, int ProgramTimePoints, int ResourcesPoints, double ProgramTime, double RamUsage, int Logged_id, int? SelectedTask_id);

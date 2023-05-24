@@ -4650,23 +4650,39 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\valak\\.nuget\\packages\\": {},
+=======
+    "C:\\Users\\Marijus\\.nuget\\packages\\": {},
+>>>>>>> main
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend3\\back-end\\pvp\\pvp.csproj",
       "projectName": "pvp",
       "projectPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend3\\back-end\\pvp\\pvp.csproj",
       "packagesPath": "C:\\Users\\valak\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\valak\\OneDrive\\Stalinis kompiuteris\\produkto vystimo projektas\\backend3\\back-end\\pvp\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
+      "projectName": "pvp",
+      "projectPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
+      "packagesPath": "C:\\Users\\Marijus\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\obj\\",
+>>>>>>> main
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\valak\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+        "C:\\Users\\Marijus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> main
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4764,7 +4780,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+=======
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+>>>>>>> main
       }
     }
   }

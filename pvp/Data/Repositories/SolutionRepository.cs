@@ -8,7 +8,7 @@ namespace pvp.Data.Repositories
     {
         Task<Sprendimas?> GetAsyncByTaskId(int id);
         Task<Sprendimas?> GetAsyncBySolutionId(int id);
-        Task<Sprendimas?> GetAsyncByUserIdAndTaskId(int userId, int taskId);
+        Task<Sprendimas?> GetAsyncByUserId(int userId);
         Task<IReadOnlyList<Sprendimas>> GetManyAsyncByUserId(int id);
         Task<IReadOnlyList<Sprendimas>> GetManyAsync();
         Task CreateAsync(Sprendimas Sprendimas);
@@ -29,9 +29,9 @@ namespace pvp.Data.Repositories
             return await _context.sprendimas.FirstOrDefaultAsync(x => x.id == id);
         }
 
-        public async Task<Sprendimas?> GetAsyncByUserIdAndTaskId(int userId, int taskId)
+        public async Task<Sprendimas?> GetAsyncByUserId(int userId)
         {
-            return await _context.sprendimas.FirstOrDefaultAsync(x => x.Prisijunge_id == userId && x.ParinktosUzduotys_id == taskId);
+            return await _context.sprendimas.FirstOrDefaultAsync(x => x.Prisijunge_id == userId);
         }
 
         public async Task<Sprendimas?> GetAsyncByTaskId(int id)
