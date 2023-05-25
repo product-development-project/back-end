@@ -49,7 +49,7 @@ namespace pvp.Controllers
             var task = new Uzduotys
             {
                 Pavadinimas = createTaskDto.Name,
-                Problema = codeInBytes,
+                Problema = createTaskDto.Problem,
                 Sudetingumas = createTaskDto.Difficulty,
                 Patvirtinta = false,
                 Mokomoji = false,
@@ -58,7 +58,7 @@ namespace pvp.Controllers
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
             await _taskRepository.CreateAsync(task);
-            return Created("", new TaskDto(task.id, task.Pavadinimas, task.Problema, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
+            return Created("", new TaskDto(task.id, task.Pavadinimas, codeInBytes, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
         }
 
         [HttpPost]
@@ -69,7 +69,7 @@ namespace pvp.Controllers
             var task = new Uzduotys
             {
                 Pavadinimas = createTaskDto.Name,
-                Problema = codeInBytes,
+                Problema = createTaskDto.Problem,
                 Sudetingumas = createTaskDto.Difficulty,
                 Patvirtinta = createTaskDto.Confirmed,
                 Mokomoji = createTaskDto.Educational,
@@ -78,7 +78,7 @@ namespace pvp.Controllers
                 UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
             };
             await _taskRepository.CreateAsync(task);
-            return Created("", new TaskDto(task.id, task.Pavadinimas, task.Problema, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
+            return Created("", new TaskDto(task.id, task.Pavadinimas, codeInBytes, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
         }
         [HttpGet]
         //[Authorize(Roles = UserRoles.Alll)]
@@ -86,7 +86,7 @@ namespace pvp.Controllers
         {
             var tasks = await _taskRepository.GetManyAsync();
             tasks = tasks.Where(o => o.Mokomoji == true).ToList();
-            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
         //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
@@ -114,7 +114,7 @@ namespace pvp.Controllers
                 tasks = tasks.Where(o => o.Sudetingumas == difficulty && o.Tipas_id == typeId).ToList();
             }
             //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
-            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
         [HttpGet]
@@ -125,7 +125,7 @@ namespace pvp.Controllers
             var task = await _taskRepository.GetAsync(taskId);
             if (task == null) { return NotFound(); }
 
-            return new TaskDto(task.id, task.Pavadinimas, task.Problema, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id);
+            return new TaskDto(task.id, task.Pavadinimas, Convert.FromBase64String(task.Problema), task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id);
         }
         [HttpDelete]
         [Route("{taskId}")]
@@ -148,7 +148,7 @@ namespace pvp.Controllers
 
             var result = tasks.Join(selected, task => task.id, p => p.Uzduotys_id, (task, id) => task).ToList();
 
-            return result.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return result.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
         [HttpPost]
@@ -184,7 +184,7 @@ namespace pvp.Controllers
             var UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var task = await _taskRepository.GetManyAsync();
             task = task.Where(x => x.UserId == UserId).ToList();
-            return task.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return task.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
     }
 }
