@@ -70,8 +70,8 @@ namespace pvp.Controllers
         [Authorize(Roles = UserRoles.User)]
         public async Task<ActionResult<LoggedDto>> Create(CreateLoggedDto createLoggedDto)
         {
-            var Logged = await _LoggedRepository.GetAsyncByUserId(User.FindFirstValue(JwtRegisteredClaimNames.Sub));
-            if (Logged != null) { return NotFound(); }
+            //var Logged = await _LoggedRepository.GetAsyncByUserId(User.FindFirstValue(JwtRegisteredClaimNames.Sub));
+            //if (Logged != null) { return NotFound(); }
 
             var newLogged = new Prisijunge
             {

@@ -65,7 +65,7 @@ namespace pvp.Controllers
 
             var company = await _companyRepository.GetAsync(user.Id);
 
-            return new CompanyDto(company.id, company.svetaine, company.pavadinimas, company.adresas, company.email, company.telefonas);
+            return new CompanyDto(company.id, company.svetaine, company.pavadinimas, company.adresas, company.email, company.PhoneNumber);
         }
     }
 }

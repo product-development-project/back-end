@@ -10,7 +10,7 @@ namespace pvp.Data.Entities
         public string pavadinimas { get; set; }
         public string adresas { get; set; }
         public string email { get; set; }
-        public string telefonas { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         public string UserId { get; set; }
