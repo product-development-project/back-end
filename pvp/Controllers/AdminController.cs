@@ -59,7 +59,7 @@ namespace pvp.Controllers
         {
             var tasks = await _taskRepository.GetManyAsync();
             tasks = tasks.Where(o => o.Patvirtinta == false).ToList();
-            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, o.Problema, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
         //[HttpGet]
@@ -112,7 +112,7 @@ namespace pvp.Controllers
 
             task.Patvirtinta = true;
             await _taskRepository.UpdateAsync(task);
-            return new TaskDto(task.id, task.Pavadinimas, task.Problema, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id);
+            return new TaskDto(task.id, task.Pavadinimas, Convert.FromBase64String(task.Problema), task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id);
         }
 
         [HttpPut]
