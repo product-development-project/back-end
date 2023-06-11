@@ -11,6 +11,8 @@
     //public int Tipas_id { get; set; }
 
     public record TaskDto(int id, string Name, byte[]? Problem, string Difficulty, bool Confirmed, bool Educational, DateTime Date, int Type_id);
+    public record TasksDto(int id, string Name, string Difficulty, bool Confirmed, bool Educational, DateTime Date, int Type_id);
+
     public record CreateTaskDto(int id, string Name, string Problem, string Difficulty, bool Confirmed, bool Educational, DateTime Date, int Type_id);
     public record UpdateTaskDto(int id, string Name, byte[] Problem, string Difficulty, bool Confirmed, bool Educational, DateTime Date, int Type_id);
 }

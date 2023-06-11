@@ -80,27 +80,28 @@ namespace pvp.Controllers
             await _taskRepository.CreateAsync(task);
             return Created("", new TaskDto(task.id, task.Pavadinimas, codeInBytes, task.Sudetingumas, task.Patvirtinta, task.Mokomoji, task.Data, task.Tipas_id));
         }
+
         [HttpGet]
         //[Authorize(Roles = UserRoles.Alll)]
-        public async Task<IEnumerable<TaskDto>> GetMany()
+        public async Task<IEnumerable<TasksDto>> GetMany()
         {
             var tasks = await _taskRepository.GetManyAsync();
             tasks = tasks.Where(o => o.Mokomoji == true).ToList();
-            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return tasks.Select(o => new TasksDto(o.id, o.Pavadinimas, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
-        //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
-        //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
-        //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
+        //NEKISTI METODO Iï¿½ VISO BE MANO LEIDIMO
+        //NEKISTI METODO Iï¿½ VISO BE MANO LEIDIMO
+        //NEKISTI METODO Iï¿½ VISO BE MANO LEIDIMO
         [HttpGet]
         [Route("{difficulty}/{typeId}")]
         //[Authorize(Roles = UserRoles.Alll)]
-        public async Task<IEnumerable<TaskDto>> GetManyFiltered(string difficulty, int typeId)
+        public async Task<IEnumerable<TasksDto>> GetManyFiltered(string difficulty, int typeId)
         {
             var tasks = await _taskRepository.GetManyAsync();
             tasks = tasks.Where(o => o.Mokomoji == true).ToList();
-            //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
-            //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
+            //NEKISTI METODO Iï¿½ VISO BE MANO LEIDIMO
+            //NEKISTI METODO Iï¿½ VISO BE MANO LEIDIMO
             if (difficulty != "Choose" && typeId == 0)
             {
                 tasks = tasks.Where(o => o.Sudetingumas == difficulty).ToList();
@@ -113,8 +114,8 @@ namespace pvp.Controllers
             {
                 tasks = tasks.Where(o => o.Sudetingumas == difficulty && o.Tipas_id == typeId).ToList();
             }
-            //NEKISTI METODO IÐ VISO BE MANO LEIDIMO
-            return tasks.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            //NEKISTI METODO Iï¿½ VISO BE MANO LEIDIMO
+            return tasks.Select(o => new TasksDto(o.id, o.Pavadinimas, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
         [HttpGet]
@@ -140,7 +141,7 @@ namespace pvp.Controllers
 
         [HttpGet]
         [Route("Competition/{competitionId}")]
-        public async Task<IEnumerable<TaskDto>> GetManyCompetition(int competitionId)
+        public async Task<IEnumerable<TasksDto>> GetManyCompetition(int competitionId)
         {
             var tasks = await _taskRepository.GetManyAsync();
             var selected = await _selectedTaskRepository.GetManyAsync();
@@ -148,7 +149,7 @@ namespace pvp.Controllers
 
             var result = tasks.Join(selected, task => task.id, p => p.Uzduotys_id, (task, id) => task).ToList();
 
-            return result.Select(o => new TaskDto(o.id, o.Pavadinimas, Convert.FromBase64String(o.Problema), o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
+            return result.Select(o => new TasksDto(o.id, o.Pavadinimas, o.Sudetingumas, o.Patvirtinta, o.Mokomoji, o.Data, o.Tipas_id));
         }
 
         [HttpPost]
