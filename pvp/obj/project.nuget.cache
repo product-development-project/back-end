@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NP0mobCKPCMIuhxHvtm9bGTVCiCv9hs1WtwcKhL/nQ16rEdrL4sfejt7ZrmF7wFSC6cXU++jh/INUEJ1fIuRpw==",
+  "dgSpecHash": "mb8xs1xCoYZcvKKDMTWtbgavHw2SVZ/1ZUigYgJVoFXfl2tH9tR52QpqG6Y9PlS6M8uVQo1sMl+JAmu1Tal89A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Marijus\\OneDrive\\Stalinis kompiuteris\\PVP\\back-end\\pvp\\pvp.csproj",
+  "projectFilePath": "D:\\Univeras\\3_metai\\2_semestras\\PVP\\back-end\\pvp\\pvp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Marijus\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Marijus\\.nuget\\packages\\google.protobuf\\3.21.9\\google.protobuf.3.21.9.nupkg.sha512",
