@@ -24,7 +24,8 @@ namespace pvp.Controllers
         private readonly ITypeRepository _typeRepository;
         private readonly IUserInfoRepositry _userInfoRepositry;
         private readonly IAuthorizationService _authorizationService;
-        public AdController(IAdRepository adRepository, ILoggedRepository loggedRepository, IResultRepository resultRepository, ISelectedTaskRepository selectedTaskRepository, ISolutionRepository solutionRepository, ITaskRepository taskRepository, ITypeRepository typeRepository, IUserInfoRepositry userInfoRepositry, IAuthorizationService authorizationService) 
+        private readonly ICompanyRepository _companyRepository;
+        public AdController(IAdRepository adRepository, ILoggedRepository loggedRepository, IResultRepository resultRepository, ISelectedTaskRepository selectedTaskRepository, ISolutionRepository solutionRepository, ITaskRepository taskRepository, ITypeRepository typeRepository, IUserInfoRepositry userInfoRepositry, IAuthorizationService authorizationService, ICompanyRepository companyRepository) 
         {
             _adRepository = adRepository;
             _loggedRepository = loggedRepository;
@@ -35,14 +36,21 @@ namespace pvp.Controllers
             _typeRepository = typeRepository;
             _userInfoRepositry = userInfoRepositry;
             _authorizationService = authorizationService;
+            _companyRepository = companyRepository;
         }
 
         [HttpGet]
         //[Authorize(Roles = UserRoles.Alll)]
-        public async Task<IEnumerable<AdDto>> GetMany()
+        public async Task<IEnumerable<AdsDto>> GetMany()
         {
             var ads = await _adRepository.GetManyAsync();
-            return ads.Select(o => new AdDto(o.id, o.Pavadinimas, o.Aprasymas, o.Pradzia, o.Pabaiga));
+            var companies = await _companyRepository.GetManyAsync();
+            var adsWithUsername = ads.Join(companies,
+                                              ad => ad.UserId,
+                                              company => company.UserId,
+                                              (ad, company) => new AdsDto(ad.id, ad.Pavadinimas, ad.Aprasymas, ad.Pradzia, ad.Pabaiga, company.pavadinimas));
+
+            return adsWithUsername;
         }
 
         [HttpGet]
